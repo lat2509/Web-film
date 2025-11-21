@@ -1,0 +1,42 @@
+# Node modules
+node_modules
+
+# Build outputs
+build
+dist
+coverage
+.vite
+
+# Git
+.git
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Editor folders
+.vscode
+.idea
+
+# Prettier config files
+.prettierrc
+.prettierignore
+
+# Generated media files (optional for web phim)
+*.svg
+*.png
+*.jpg
+*.jpeg
+*.ico
+*.gif
+*.mp4
+*.webp
+
+# Temporary files
+*.bak
+*.tmp
+*.swp

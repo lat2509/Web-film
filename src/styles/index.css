@@ -1,0 +1,27 @@
+@import "normalize.css";
+@import "tailwindcss";
+
+/* --- 1. Dành cho Chrome, Safari, Edge (WebKit) --- */
+
+/* Độ rộng của thanh cuộn */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Màu nền của rãnh cuộn (Track) */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+/* Phần thanh trượt (Thumb) */
+::-webkit-scrollbar-thumb {
+  background: #b8b8b8;
+  border-radius: 10px;
+}
+
+/* Hiệu ứng khi di chuột vào thanh trượt */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
