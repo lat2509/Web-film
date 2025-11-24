@@ -4,6 +4,10 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import HoverDropdown from "../common/HoverDropdown";
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import login from "../../services/login";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
+import { logout } from "../../store/authSlice";
 
 const Header = () => {
   const [delele, setDelete] = useState(false);
@@ -21,6 +25,8 @@ const Header = () => {
   const handleNavigate = (path: string) => {
     navigate({ to: path });
   };
+  const dispatch = useDispatch();
+  const sessionId = useSelector((state: RootState) => state.auth.sessionId);
   return (
     <>
       <div className="flex h-16 w-full justify-center bg-[#032541]">
@@ -111,7 +117,43 @@ const Header = () => {
                   <Plus />
                 </a>
               </li>
-              <li className="ml-4 hover:cursor-pointer">đăng nhập</li>
+              <li className="ml-4">
+                {sessionId ? (
+                  <DropdownMenu.Root>
+                    <DropdownMenu.Trigger asChild>
+                      <div className="h-8 w-8 rounded-full border bg-green-500 text-center hover:cursor-pointer">
+                        <p className="leading-7">A</p>
+                      </div>
+                    </DropdownMenu.Trigger>
+                    <DropdownMenu.Portal>
+                      <DropdownMenu.Content
+                        sideOffset={6}
+                        align="center"
+                        className="z-20 flex h-8 w-36 flex-col justify-center rounded-md bg-white px-2 py-3 font-normal text-black shadow-lg outline-0"
+                      >
+                        <DropdownMenu.Arrow className="fill-white" />
+                        <DropdownMenu.Item
+                          onSelect={() => {
+                            dispatch(logout());
+                          }}
+                          className="p-1 outline-0 hover:cursor-pointer hover:bg-gray-400"
+                        >
+                          Log Out
+                        </DropdownMenu.Item>
+                      </DropdownMenu.Content>
+                    </DropdownMenu.Portal>
+                  </DropdownMenu.Root>
+                ) : (
+                  <button
+                    onClick={() => {
+                      login();
+                    }}
+                    className="hover:cursor-pointer"
+                  >
+                    đăng nhập
+                  </button>
+                )}
+              </li>
               <li className="ml-4 hover:cursor-pointer">
                 {isSearchOpen && !isHomePage ? (
                   <button

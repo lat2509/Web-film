@@ -14,10 +14,10 @@ import TvShowsPopular from "./components/tv series/TvShowsPopular";
 import NowPlayingMovie from "./components/movie/NowPlayingMovie";
 import UpcomingMovie from "./components/movie/UpcomingMovie";
 import TopRatedMovie from "./components/movie/TopRatedMovie";
-import { airingTVshows } from "./api/moviesApi";
 import AiringTodayTvShow from "./components/tv series/AiringTodayTvShow";
 import OnTheAirTvShow from "./components/tv series/OnTheAirTvShow";
 import TopRatedTvShow from "./components/tv series/TopRatedTvShow";
+import Approved from "./pages/Approved";
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -85,6 +85,12 @@ const topRatedTvRoute = createRoute({
   component: TopRatedTvShow,
 });
 
+const approvedRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/approved",
+  component: Approved,
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   popularMovieRoute,
@@ -95,6 +101,7 @@ const routeTree = rootRoute.addChildren([
   airingTodayTvRoute,
   onTheAirTvRoute,
   topRatedTvRoute,
+  approvedRoute,
 ]);
 
 const router = createRouter({ routeTree });
