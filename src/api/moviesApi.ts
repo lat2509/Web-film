@@ -48,3 +48,12 @@ export const trailerVideo = (type: "movie" | "tv", id: number, language: string)
     },
   });
 };
+
+export const mediaList = (media: string, catalog: string, language: string, page: number) => {
+  return axiosClient.get(`/${media}/${catalog}`, {
+    params: {
+      language: language,
+      page: page,
+    }
+  })
+}

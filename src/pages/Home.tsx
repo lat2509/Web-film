@@ -73,8 +73,8 @@ const Home = () => {
       setBannerMovie(movieTreding[randomIndex]);
     }
   }, [movieTreding]);
-  if (isLoading) return <div>Loading...!</div>;
-  if (isError) return <div>Error</div>;
+  if (isLoading) return <div className="flex items-center justify-center">Loading...!</div>;
+  if (isError) return <div className="flex items-center justify-center">Error</div>;
 
   // Logic Banner
   const bannerUrl = bannerMovie?.backdrop_path
