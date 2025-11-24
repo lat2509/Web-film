@@ -54,6 +54,6 @@ export const mediaList = (media: string, catalog: string, language: string, page
     params: {
       language: language,
       page: page,
-    }
-  })
-}
+    },
+  });
+};

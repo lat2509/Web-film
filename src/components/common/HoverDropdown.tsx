@@ -10,7 +10,7 @@ const HoverDropdown = ({ label, children }: HoverDropdownType) => {
       <DropdownMenu.DropdownMenuContent
         sideOffset={6}
         align="start"
-        className="z-20 flex w-36 flex-col outline-0 justify-center rounded-md bg-white font-normal text-black shadow-lg"
+        className="z-20 flex w-36 flex-col justify-center rounded-md bg-white font-normal text-black shadow-lg outline-0"
       >
         {children}
       </DropdownMenu.DropdownMenuContent>

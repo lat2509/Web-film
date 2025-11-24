@@ -77,9 +77,7 @@ const Home = () => {
   if (isError) return <div className="flex items-center justify-center">Error</div>;
 
   // Logic Banner
-  const bannerUrl = bannerMovie?.backdrop_path
-    ? `${envImgUrl}${bannerMovie.backdrop_path}`
-    : "";
+  const bannerUrl = bannerMovie?.backdrop_path ? `${envImgUrl}${bannerMovie.backdrop_path}` : "";
 
   return (
     <>

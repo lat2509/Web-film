@@ -10,7 +10,7 @@ const Header = () => {
   const [textInput, setTextInput] = useState("");
   const router = useRouterState();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const isHomePage = router.location.pathname === '/';
+  const isHomePage = router.location.pathname === "/";
   useEffect(() => {
     setIsSearchOpen(false);
     setTextInput("");
@@ -20,7 +20,7 @@ const Header = () => {
   const navigate = useNavigate();
   const handleNavigate = (path: string) => {
     navigate({ to: path });
-  }
+  };
   return (
     <>
       <div className="flex h-16 w-full justify-center bg-[#032541]">
@@ -34,7 +34,7 @@ const Header = () => {
                 <HoverDropdown label="Movies">
                   <DropdownMenu.DropdownMenuItem
                     onSelect={() => {
-                      handleNavigate('/movie/popular')
+                      handleNavigate("/movie/popular");
                     }}
                     className="mt-1.5 py-2 pr-12 pl-4 outline-none hover:bg-gray-200"
                   >
@@ -42,23 +42,26 @@ const Header = () => {
                   </DropdownMenu.DropdownMenuItem>
                   <DropdownMenu.DropdownMenuItem
                     onSelect={() => {
-                      handleNavigate('/movie/now-playing')
+                      handleNavigate("/movie/now-playing");
                     }}
-                    className="py-2 pr-12 pl-4 outline-none hover:bg-gray-200">
+                    className="py-2 pr-12 pl-4 outline-none hover:bg-gray-200"
+                  >
                     Now Playing
                   </DropdownMenu.DropdownMenuItem>
                   <DropdownMenu.DropdownMenuItem
                     onSelect={() => {
-                      handleNavigate('/movie/upcoming')
+                      handleNavigate("/movie/upcoming");
                     }}
-                    className="py-2 pr-12 pl-4 outline-none hover:bg-gray-200">
+                    className="py-2 pr-12 pl-4 outline-none hover:bg-gray-200"
+                  >
                     Upcoming
                   </DropdownMenu.DropdownMenuItem>
                   <DropdownMenu.DropdownMenuItem
                     onSelect={() => {
-                      handleNavigate('/movie/top-rated')
+                      handleNavigate("/movie/top-rated");
                     }}
-                    className="mb-1.5 py-2 pr-12 pl-4 outline-none hover:bg-gray-200">
+                    className="mb-1.5 py-2 pr-12 pl-4 outline-none hover:bg-gray-200"
+                  >
                     Top Rated
                   </DropdownMenu.DropdownMenuItem>
                 </HoverDropdown>
@@ -67,29 +70,34 @@ const Header = () => {
                 <HoverDropdown label="TV Shows">
                   <DropdownMenu.DropdownMenuItem
                     onSelect={() => {
-                      handleNavigate('/tv/popular');
+                      handleNavigate("/tv/popular");
                     }}
-                    className="mt-1.5 py-2 pr-12 pl-4 outline-none hover:bg-gray-200">
+                    className="mt-1.5 py-2 pr-12 pl-4 outline-none hover:bg-gray-200"
+                  >
                     Popular
                   </DropdownMenu.DropdownMenuItem>
                   <DropdownMenu.DropdownMenuItem
                     onSelect={() => {
-                      handleNavigate('/tv/airing-today');
+                      handleNavigate("/tv/airing-today");
                     }}
-                    className="py-2 pr-12 pl-4 outline-none hover:bg-gray-200">
+                    className="py-2 pr-12 pl-4 outline-none hover:bg-gray-200"
+                  >
                     Airing Today
                   </DropdownMenu.DropdownMenuItem>
                   <DropdownMenu.DropdownMenuItem
                     onSelect={() => {
-                      handleNavigate('/tv/on-the-air');
+                      handleNavigate("/tv/on-the-air");
                     }}
-                    className="py-2 pr-12 pl-4 outline-none hover:bg-gray-200">
+                    className="py-2 pr-12 pl-4 outline-none hover:bg-gray-200"
+                  >
                     On TV
                   </DropdownMenu.DropdownMenuItem>
-                  <DropdownMenu.DropdownMenuItem onSelect={() => {
-                    handleNavigate('/tv/top-rated');
-                  }}
-                    className="mb-1.5 py-2 pr-12 pl-4 outline-none hover:bg-gray-200">
+                  <DropdownMenu.DropdownMenuItem
+                    onSelect={() => {
+                      handleNavigate("/tv/top-rated");
+                    }}
+                    className="mb-1.5 py-2 pr-12 pl-4 outline-none hover:bg-gray-200"
+                  >
                     Top Rated
                   </DropdownMenu.DropdownMenuItem>
                 </HoverDropdown>
@@ -105,17 +113,38 @@ const Header = () => {
               </li>
               <li className="ml-4 hover:cursor-pointer">đăng nhập</li>
               <li className="ml-4 hover:cursor-pointer">
-                {isSearchOpen && !isHomePage ?
-                  (<button className="hover:cursor-pointer" onClick={() => { setIsSearchOpen(false) }}><X /></button>)
-                  : (<button className="hover:cursor-pointer" onClick={() => { setIsSearchOpen(true) }}><Search /></button>)}
+                {isSearchOpen && !isHomePage ? (
+                  <button
+                    className="hover:cursor-pointer"
+                    onClick={() => {
+                      setIsSearchOpen(false);
+                    }}
+                  >
+                    <X />
+                  </button>
+                ) : (
+                  <button
+                    className="hover:cursor-pointer"
+                    onClick={() => {
+                      setIsSearchOpen(true);
+                    }}
+                  >
+                    <Search />
+                  </button>
+                )}
               </li>
             </ul>
           </div>
         </div>
       </div>
-      {
-        showSearchBar &&
-        (<div className={isHomePage ? "sticky top-0 z-10 h-11 w-full bg-white shadow-2xs" : "absolute z-10 h-11 w-full bg-white shadow-2xs"}>
+      {showSearchBar && (
+        <div
+          className={
+            isHomePage
+              ? "sticky top-0 z-10 h-11 w-full bg-white shadow-2xs"
+              : "absolute z-10 h-11 w-full bg-white shadow-2xs"
+          }
+        >
           <div className="h-11 px-10">
             <form className="flex h-11 items-center">
               <label htmlFor="search" className="flex w-full flex-row hover:cursor-text">
@@ -145,8 +174,8 @@ const Header = () => {
               </label>
             </form>
           </div>
-        </div>)
-      }
+        </div>
+      )}
     </>
   );
 };
