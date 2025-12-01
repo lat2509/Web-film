@@ -1,9 +1,9 @@
 // src/pages/Approved.tsx
 import { useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router"; // Hoặc react-router-dom
-import { getSessionId } from "../api/authApi";
+import { getSessionId } from "@api/authApi";
 import { useDispatch } from "react-redux";
-import { loginSuccess } from "../store/authSlice";
+import { loginSuccess } from "@store/authSlice";
 
 const Approved = () => {
   const navigate = useNavigate();

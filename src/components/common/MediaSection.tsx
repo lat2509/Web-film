@@ -1,24 +1,43 @@
-// src/components/home/MediaSection.tsx
-import SwitchToggle from "../common/SwitchToggle";
-import MediaCard from "../common/MediaCard";
-import type { MediaSectionProps } from "../../types/type";
+import { memo } from "react";
+import SwitchToggle from "@components/common/SwitchToggle";
+import MediaCard from "@components/common/MediaCard";
+import type { MediaSectionProps } from "@app-types/type";
 
-const MediaSection = ({ title, items, value, onToggle, data }: MediaSectionProps) => {
+// IMPORT STYLED COMPONENTS
+import {
+  SectionContainer,
+  ContentWrapper,
+  SectionHeader,
+  SectionTitle,
+  HorizontalScroll,
+} from "@styles/trendingSection.styles";
+
+// Component hiển thị list
+const MediaList = memo(({ data }: { data: any[] }) => (
+  <HorizontalScroll>
+    {data.map((movie) => (
+      <MediaCard key={movie.id} movie={movie} />
+    ))}
+  </HorizontalScroll>
+));
+
+MediaList.displayName = "MediaList";
+
+const MediaSection = memo(({ title, items, value, onToggle, data }: MediaSectionProps) => {
   return (
-    <div className="h-[430px] w-full">
-      <div className="mx-auto w-5/6 pt-7">
-        <div className="flex flex-row items-center gap-5">
-          <p className="text-2xl font-semibold">{title}</p>
+    <SectionContainer sx={{ backgroundImage: "none", pt: 2 }}>
+      <ContentWrapper>
+        <SectionHeader>
+          <SectionTitle>{title}</SectionTitle>
           <SwitchToggle items={items} value={value} onToggle={onToggle} />
-        </div>
-        <div className="flex flex-row overflow-x-scroll py-5">
-          {data.map((movie) => (
-            <MediaCard key={movie.id} movie={movie} />
-          ))}
-        </div>
-      </div>
-    </div>
+        </SectionHeader>
+
+        <MediaList data={data} />
+      </ContentWrapper>
+    </SectionContainer>
   );
-};
+});
+
+MediaSection.displayName = "MediaSection";
 
 export default MediaSection;

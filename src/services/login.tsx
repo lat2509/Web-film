@@ -1,4 +1,4 @@
-import { getRequestToken } from "../api/authApi";
+import { getRequestToken } from "@api/authApi";
 
 const login = async () => {
   try {

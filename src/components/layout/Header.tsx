@@ -1,222 +1,193 @@
-import { Plus, Search, X } from "lucide-react";
-import { IoSearchSharp } from "react-icons/io5";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import HoverDropdown from "../common/HoverDropdown";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import login from "../../services/login";
 import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "../../store/store";
-import { logout } from "../../store/authSlice";
+import { Box, Stack, IconButton, Menu, MenuItem, Typography } from "@mui/material";
+import { Search, X } from "lucide-react";
+import { IoSearchSharp } from "react-icons/io5";
+import login from "@services/login";
+import { logout } from "@store/authSlice";
+import type { RootState } from "@store/store";
+import HoverDropdown from "@components/common/HoverDropdown";
+
+import {
+  HeaderContainer,
+  ContentWrapper,
+  Logo,
+  NavList,
+  NavItemText,
+  UserBadge,
+  SearchContainer,
+  SearchContent,
+  SearchInput,
+  ClearButton,
+} from "@styles/header.styles";
+
+// Constants
+const HOME_PATH = "/";
+const AVATAR_INITIAL = "A";
+const SEARCH_ICON_SIZE = 24;
+const LOGIN_TEXT = "đăng nhập";
+
+const MOVIE_MENU_ITEMS = [
+  { label: "Popular", path: "/browse/movie/popular" },
+  { label: "Now Playing", path: "/browse/movie/now-playing" },
+  { label: "Upcoming", path: "/browse/movie/upcoming" },
+  { label: "Top Rated", path: "/browse/movie/top-rated" },
+] as const;
+
+const TV_MENU_ITEMS = [
+  { label: "Popular", path: "/browse/tv/popular" },
+  { label: "Airing Today", path: "/browse/tv/airing-today" },
+  { label: "On TV", path: "/browse/tv/on-the-air" },
+  { label: "Top Rated", path: "/browse/tv/top-rated" },
+] as const;
+
+const MENU_PROPS = {
+  anchorOrigin: { vertical: "bottom" as const, horizontal: "center" as const },
+  transformOrigin: { vertical: "top" as const, horizontal: "center" as const },
+};
 
 const Header = () => {
-  const [delele, setDelete] = useState(false);
   const [textInput, setTextInput] = useState("");
-  const router = useRouterState();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const isHomePage = router.location.pathname === "/";
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+  const router = useRouterState();
+  const isHomePage = router.location.pathname === HOME_PATH;
+  const dispatch = useDispatch();
+  const sessionId = useSelector((state: RootState) => state.auth.sessionId);
+  const navigate = useNavigate();
+
   useEffect(() => {
     setIsSearchOpen(false);
     setTextInput("");
-    setDelete(false);
   }, [router.location.pathname]);
+
   const showSearchBar = isHomePage || isSearchOpen;
-  const navigate = useNavigate();
-  const handleNavigate = (path: string) => {
-    navigate({ to: path });
-  };
-  const dispatch = useDispatch();
-  const sessionId = useSelector((state: RootState) => state.auth.sessionId);
+
+  const handleNavigate = useCallback(
+    (path: string) => {
+      navigate({ to: path });
+    },
+    [navigate],
+  );
+
+  const handleLogout = useCallback(() => {
+    dispatch(logout());
+    setAnchorElUser(null);
+  }, [dispatch]);
+
+  const handleUserMenuClose = useCallback(() => {
+    setAnchorElUser(null);
+  }, []);
+
+  const handleUserMenuOpen = useCallback((e: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(e.currentTarget);
+  }, []);
+
+  const handleSearchToggle = useCallback(() => {
+    setIsSearchOpen((prev) => !prev);
+  }, []);
+
   return (
     <>
-      <div className="flex h-16 w-full justify-center bg-[#032541]">
-        <div className="flex min-w-4/6 flex-row justify-between px-10">
-          <div className="flex flex-row items-center">
-            <Link to="/">
-              <img src="/images/movie_logo2.png" alt="movie" className="mr-4 h-8" />
+      {/* --- Main Header --- */}
+      <HeaderContainer>
+        <ContentWrapper>
+          {/* LEFT SIDE: Logo & Menu */}
+          <Stack direction="row" alignItems="center">
+            <Link to={HOME_PATH}>
+              <Logo src="/images/movie_logo2.png" alt="movie" />
             </Link>
-            <ul className="flex flex-row gap-2 py-2 text-[14px] font-bold text-white">
-              <li className="mr-4 hover:cursor-pointer">
+
+            <NavList>
+              <li>
                 <HoverDropdown label="Movies">
-                  <DropdownMenu.DropdownMenuItem
-                    onSelect={() => {
-                      handleNavigate("/movie/popular");
-                    }}
-                    className="mt-1.5 py-2 pr-12 pl-4 outline-none hover:bg-gray-200"
-                  >
-                    Popular
-                  </DropdownMenu.DropdownMenuItem>
-                  <DropdownMenu.DropdownMenuItem
-                    onSelect={() => {
-                      handleNavigate("/movie/now-playing");
-                    }}
-                    className="py-2 pr-12 pl-4 outline-none hover:bg-gray-200"
-                  >
-                    Now Playing
-                  </DropdownMenu.DropdownMenuItem>
-                  <DropdownMenu.DropdownMenuItem
-                    onSelect={() => {
-                      handleNavigate("/movie/upcoming");
-                    }}
-                    className="py-2 pr-12 pl-4 outline-none hover:bg-gray-200"
-                  >
-                    Upcoming
-                  </DropdownMenu.DropdownMenuItem>
-                  <DropdownMenu.DropdownMenuItem
-                    onSelect={() => {
-                      handleNavigate("/movie/top-rated");
-                    }}
-                    className="mb-1.5 py-2 pr-12 pl-4 outline-none hover:bg-gray-200"
-                  >
-                    Top Rated
-                  </DropdownMenu.DropdownMenuItem>
+                  {MOVIE_MENU_ITEMS.map((item) => (
+                    <MenuItem key={item.path} onClick={() => handleNavigate(item.path)}>
+                      {item.label}
+                    </MenuItem>
+                  ))}
                 </HoverDropdown>
               </li>
-              <li className="mr-4 hover:cursor-pointer">
+              <li>
                 <HoverDropdown label="TV Shows">
-                  <DropdownMenu.DropdownMenuItem
-                    onSelect={() => {
-                      handleNavigate("/tv/popular");
-                    }}
-                    className="mt-1.5 py-2 pr-12 pl-4 outline-none hover:bg-gray-200"
-                  >
-                    Popular
-                  </DropdownMenu.DropdownMenuItem>
-                  <DropdownMenu.DropdownMenuItem
-                    onSelect={() => {
-                      handleNavigate("/tv/airing-today");
-                    }}
-                    className="py-2 pr-12 pl-4 outline-none hover:bg-gray-200"
-                  >
-                    Airing Today
-                  </DropdownMenu.DropdownMenuItem>
-                  <DropdownMenu.DropdownMenuItem
-                    onSelect={() => {
-                      handleNavigate("/tv/on-the-air");
-                    }}
-                    className="py-2 pr-12 pl-4 outline-none hover:bg-gray-200"
-                  >
-                    On TV
-                  </DropdownMenu.DropdownMenuItem>
-                  <DropdownMenu.DropdownMenuItem
-                    onSelect={() => {
-                      handleNavigate("/tv/top-rated");
-                    }}
-                    className="mb-1.5 py-2 pr-12 pl-4 outline-none hover:bg-gray-200"
-                  >
-                    Top Rated
-                  </DropdownMenu.DropdownMenuItem>
+                  {TV_MENU_ITEMS.map((item) => (
+                    <MenuItem key={item.path} onClick={() => handleNavigate(item.path)}>
+                      {item.label}
+                    </MenuItem>
+                  ))}
                 </HoverDropdown>
               </li>
-            </ul>
-          </div>
-          <div className="flex">
-            <ul className="flex flex-row items-center gap-2 py-2 text-[16px] font-bold text-white">
-              <li className="ml-4 hover:cursor-pointer">
-                <a href="">
-                  <Plus />
-                </a>
-              </li>
-              <li className="ml-4">
-                {sessionId ? (
-                  <DropdownMenu.Root>
-                    <DropdownMenu.Trigger asChild>
-                      <div className="h-8 w-8 rounded-full border bg-green-500 text-center hover:cursor-pointer">
-                        <p className="leading-7">A</p>
-                      </div>
-                    </DropdownMenu.Trigger>
-                    <DropdownMenu.Portal>
-                      <DropdownMenu.Content
-                        sideOffset={6}
-                        align="center"
-                        className="z-20 flex h-8 w-36 flex-col justify-center rounded-md bg-white px-2 py-3 font-normal text-black shadow-lg outline-0"
-                      >
-                        <DropdownMenu.Arrow className="fill-white" />
-                        <DropdownMenu.Item
-                          onSelect={() => {
-                            dispatch(logout());
-                          }}
-                          className="p-1 outline-0 hover:cursor-pointer hover:bg-gray-400"
-                        >
-                          Log Out
-                        </DropdownMenu.Item>
-                      </DropdownMenu.Content>
-                    </DropdownMenu.Portal>
-                  </DropdownMenu.Root>
-                ) : (
-                  <button
-                    onClick={() => {
-                      login();
-                    }}
-                    className="hover:cursor-pointer"
+            </NavList>
+          </Stack>
+
+          {/* RIGHT SIDE: User & Search */}
+          <Stack direction="row" alignItems="center" spacing={2}>
+            {/* User Section */}
+            <Box>
+              {sessionId ? (
+                <>
+                  <UserBadge onClick={handleUserMenuOpen}>
+                    <Typography fontSize="inherit" fontWeight="inherit">
+                      {AVATAR_INITIAL}
+                    </Typography>
+                  </UserBadge>
+
+                  <Menu
+                    anchorEl={anchorElUser}
+                    open={Boolean(anchorElUser)}
+                    onClose={handleUserMenuClose}
+                    {...MENU_PROPS}
+                    sx={{ mt: 1 }}
                   >
-                    đăng nhập
-                  </button>
-                )}
-              </li>
-              <li className="ml-4 hover:cursor-pointer">
-                {isSearchOpen && !isHomePage ? (
-                  <button
-                    className="hover:cursor-pointer"
-                    onClick={() => {
-                      setIsSearchOpen(false);
-                    }}
-                  >
-                    <X />
-                  </button>
-                ) : (
-                  <button
-                    className="hover:cursor-pointer"
-                    onClick={() => {
-                      setIsSearchOpen(true);
-                    }}
-                  >
-                    <Search />
-                  </button>
-                )}
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+                    <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+                  </Menu>
+                </>
+              ) : (
+                <NavItemText onClick={() => login()} sx={{ fontSize: "16px" }}>
+                  {LOGIN_TEXT}
+                </NavItemText>
+              )}
+            </Box>
+
+            {/* Search Icon Toggle */}
+            <IconButton
+              disableRipple
+              onClick={handleSearchToggle}
+              color="secondary" // Sử dụng màu secondary (blue) từ theme
+              sx={{ p: 0 }}
+            >
+              {isSearchOpen && !isHomePage ? (
+                <X size={SEARCH_ICON_SIZE} />
+              ) : (
+                <Search size={SEARCH_ICON_SIZE} />
+              )}
+            </IconButton>
+          </Stack>
+        </ContentWrapper>
+      </HeaderContainer>
+
+      {/* --- Search Bar --- */}
       {showSearchBar && (
-        <div
-          className={
-            isHomePage
-              ? "sticky top-0 z-10 h-11 w-full bg-white shadow-2xs"
-              : "absolute z-10 h-11 w-full bg-white shadow-2xs"
-          }
-        >
-          <div className="h-11 px-10">
-            <form className="flex h-11 items-center">
-              <label htmlFor="search" className="flex w-full flex-row hover:cursor-text">
-                <IoSearchSharp className="mt-1 text-2xl" />
-                <input
-                  type="text"
-                  id="search"
-                  value={textInput}
-                  onChange={(e) => {
-                    setDelete(true);
-                    setTextInput(e.target.value);
-                  }}
-                  placeholder="Search for a movie, tv show,..."
-                  className="w-full border-0 p-2 text-gray-400 italic outline-0"
-                  autoComplete=""
-                />
-                {delele && (
-                  <button
-                    onClick={(e) => {
-                      (e.preventDefault(), setTextInput(""), setDelete(false));
-                    }}
-                    className="hover:cursor-pointer"
-                  >
-                    <X className="text-gray-500" />
-                  </button>
-                )}
-              </label>
-            </form>
-          </div>
-        </div>
+        <SearchContainer isSticky={isHomePage}>
+          <SearchContent onSubmit={(e) => e.preventDefault()}>
+            <IoSearchSharp size={SEARCH_ICON_SIZE} />
+
+            <SearchInput
+              placeholder="Search for a movie, tv show,..."
+              value={textInput}
+              onChange={(e) => setTextInput(e.target.value)}
+              endAdornment={
+                textInput && (
+                  <ClearButton size="small" onClick={() => setTextInput("")}>
+                    <X size={16} />
+                  </ClearButton>
+                )
+              }
+            />
+          </SearchContent>
+        </SearchContainer>
       )}
     </>
   );

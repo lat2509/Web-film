@@ -1,41 +1,59 @@
-// src/components/common/MediaCard.tsx
-import type { MovieType } from "../../types/type";
-import { getColorRating, formatDate } from "../../utils/formatters";
+import { useMemo } from "react";
+import { Box } from "@mui/material";
+import type { MovieType } from "@app-types/type";
+import { formatDate } from "@utils/formatters";
+
+// IMPORT STYLED COMPONENTS
+import {
+  CardContainer,
+  ImageWrapper,
+  CardImage,
+  RatingCircle,
+  CardTitle,
+  CardDate,
+} from "@styles/movieCard.styles";
+
+const getRatingHexColor = (vote: number): string => {
+  if (vote >= 7) return "#21d07a";
+  if (vote >= 4 && vote < 7) return "#d2d531";
+  return "#db2360";
+};
 
 const MediaCard = ({ movie }: { movie: MovieType }) => {
   const envImgUrl = import.meta.env.VITE_TMDB_IMG_URL;
-  const _title = movie.title ?? movie.name;
-  const _rawDate = movie.release_date ?? movie.first_air_date;
+
+  const memoizedData = useMemo(() => {
+    const title = movie.title ?? movie.name;
+    const rawDate = movie.release_date ?? movie.first_air_date;
+    const rating = Math.round(movie.vote_average * 10) / 10;
+    const ratingHex = getRatingHexColor(movie.vote_average);
+
+    return { title, rawDate, rating, ratingHex };
+  }, [movie.title, movie.name, movie.release_date, movie.first_air_date, movie.vote_average]);
+
+  const { title, rawDate, rating, ratingHex } = memoizedData;
 
   return (
-    <div className="relative mr-5 min-h-[300px] w-[150px] flex-none">
-      <div className="shadow-2xl">
-        <img
-          src={`${envImgUrl}${movie.poster_path}`}
-          alt={`${_title}`}
-          className="min-h-56 min-w-[150px] cursor-pointer rounded-md object-cover"
-          title={_title}
+    <CardContainer>
+      {/* Image Section */}
+      <ImageWrapper>
+        <CardImage
+          src={movie.poster_path ? `${envImgUrl}${movie.poster_path}` : "/placeholder.jpg"}
+          alt={title}
+          title={title}
+          loading="lazy"
         />
-      </div>
-      <div>
-        <div className="absolute top-51 left-2 h-10 w-10 rounded-full border-2 border-black">
-          <div
-            className={`border-2 ${getColorRating(movie.vote_average)} h-9 w-9 rounded-full bg-black text-center text-white`}
-          >
-            <p className="leading-8">{Math.round(movie.vote_average * 10) / 10}</p>
-          </div>
-        </div>
-        <div className="mt-4 flex flex-col text-[16px] leading-snug">
-          <h3
-            className="line-clamp-2 h-14 cursor-pointer overflow-hidden py-3 leading-snug font-bold text-black hover:text-blue-500"
-            title={_title}
-          >
-            {_title}
-          </h3>
-          <p className="text-gray-500">{formatDate(_rawDate)}</p>
-        </div>
-      </div>
-    </div>
+      </ImageWrapper>
+
+      {/* Rating Circle: Truyền trực tiếp prop scoreColor */}
+      <RatingCircle scoreColor={ratingHex}>{rating}</RatingCircle>
+
+      {/* Content Section */}
+      <Box sx={{ px: 1 }}>
+        <CardTitle title={title}>{title}</CardTitle>
+        <CardDate>{formatDate(rawDate)}</CardDate>
+      </Box>
+    </CardContainer>
   );
 };
 

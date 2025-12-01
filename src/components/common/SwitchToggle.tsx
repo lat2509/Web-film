@@ -1,3 +1,5 @@
+import { memo, useCallback } from "react";
+import { styled } from "@mui/material/styles";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
@@ -7,42 +9,64 @@ interface SwitchToggleProps {
   onToggle: (value: string) => void;
 }
 
-const SwitchToggle = ({ items, value, onToggle }: SwitchToggleProps) => {
-  const handleChange = (event: React.MouseEvent<HTMLElement>, newValue: string) => {
-    if (newValue !== null) {
-      onToggle(newValue);
-    }
-  };
+// Styled Component
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+  height: "30px",
+  backgroundColor: theme.palette.common.white,
+  borderRadius: "30px",
+  border: `1px solid ${theme.palette.primary.main}`,
+
+  "& .MuiToggleButtonGroup-grouped": {
+    margin: 0,
+    border: 0,
+    textTransform: "none",
+    fontWeight: 600,
+    fontSize: "14px",
+    padding: theme.spacing(0, 2),
+    color: theme.palette.primary.main,
+    borderRadius: "30px",
+
+    "&:hover": {
+      backgroundColor: "rgba(3, 37, 65, 0.1)",
+    },
+
+    "&.Mui-selected": {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.common.white,
+      borderRadius: "30px",
+      "&:hover": {
+        backgroundColor: theme.palette.primary.main,
+      },
+    },
+  },
+}));
+
+const SwitchToggle = memo(({ items, value, onToggle }: SwitchToggleProps) => {
+  const handleChange = useCallback(
+    (_event: React.MouseEvent<HTMLElement>, newValue: string) => {
+      if (newValue !== null) {
+        onToggle(newValue);
+      }
+    },
+    [onToggle],
+  );
+
   return (
-    <ToggleButtonGroup
+    <StyledToggleButtonGroup
       value={value}
       exclusive
       onChange={handleChange}
       aria-label="time window"
-      sx={{
-        height: "30px",
-        backgroundColor: "white",
-        borderRadius: "30px",
-        border: "1px solid #032541",
-        "& .MuiToggleButtonGroup-grouped": {
-          margin: 0,
-          border: 0,
-          "&:not(:first-of-type)": {
-            borderRadius: "30px",
-          },
-          "&:first-of-type": {
-            borderRadius: "30px",
-          },
-        },
-      }}
     >
       {items.map((item) => (
-        <ToggleButton key={item.value} value={item.value}>
+        <ToggleButton key={item.value} value={item.value} disableRipple>
           {item.label}
         </ToggleButton>
       ))}
-    </ToggleButtonGroup>
+    </StyledToggleButtonGroup>
   );
-};
+});
+
+SwitchToggle.displayName = "SwitchToggle";
 
 export default SwitchToggle;

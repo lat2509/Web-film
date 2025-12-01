@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { trailerVideo } from "../../api/moviesApi";
-import type { VidType } from "../../types/type";
+import { Typography } from "@mui/material";
+import { trailerVideo } from "@api/moviesApi";
+import type { VidType } from "@app-types/type";
 
 const TrailerName = ({ id, type }: { id: number; type: "movie" | "tv" }) => {
   const { data, isLoading } = useQuery({
@@ -13,11 +14,18 @@ const TrailerName = ({ id, type }: { id: number; type: "movie" | "tv" }) => {
       );
       return trailer || results[0] || null;
     },
-    staleTime: 1000 * 60 * 60, // Cache 1 tiếng
+    staleTime: 1000 * 60 * 60,
   });
 
-  if (isLoading) return <span>Loading...</span>;
-  return <span>{data?.name || "Official Trailer"}</span>;
+  if (isLoading) {
+    return <Typography component="span">Loading...</Typography>;
+  }
+
+  return (
+    <Typography component="span" variant="inherit">
+      {data?.name || "Official Trailer"}
+    </Typography>
+  );
 };
 
 export default TrailerName;
