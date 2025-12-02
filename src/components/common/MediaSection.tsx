@@ -1,19 +1,21 @@
 import { memo } from "react";
+
+// Types
+import type { MediaSectionProps, MovieType } from "@app-types/type";
+
+// Components
 import SwitchToggle from "@components/common/SwitchToggle";
 import MediaCard from "@components/common/MediaCard";
-import type { MediaSectionProps } from "@app-types/type";
 
-// IMPORT STYLED COMPONENTS
 import {
   SectionContainer,
   ContentWrapper,
   SectionHeader,
   SectionTitle,
   HorizontalScroll,
-} from "@styles/trendingSection.styles";
+} from "@styles/TrendingSection.styles";
 
-// Component hiển thị list
-const MediaList = memo(({ data }: { data: any[] }) => (
+const MediaList = memo(({ data }: { data: MovieType[] }) => (
   <HorizontalScroll>
     {data.map((movie) => (
       <MediaCard key={movie.id} movie={movie} />
@@ -25,7 +27,7 @@ MediaList.displayName = "MediaList";
 
 const MediaSection = memo(({ title, items, value, onToggle, data }: MediaSectionProps) => {
   return (
-    <SectionContainer sx={{ backgroundImage: "none", pt: 2 }}>
+    <SectionContainer hasBackground={false}>
       <ContentWrapper>
         <SectionHeader>
           <SectionTitle>{title}</SectionTitle>

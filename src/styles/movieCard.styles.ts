@@ -1,5 +1,11 @@
 import { styled, Box, Typography } from "@mui/material";
 
+export const TextContent = styled(Box)(({ theme }) => ({
+  paddingLeft: theme.spacing(1),
+  paddingRight: theme.spacing(1),
+  marginTop: theme.spacing(2),
+}));
+
 export const CardContainer = styled(Box)(({ theme }) => ({
   position: "relative",
   marginRight: theme.spacing(2.5),

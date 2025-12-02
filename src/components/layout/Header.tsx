@@ -1,14 +1,14 @@
-import { useState, useEffect, useCallback } from "react";
-import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { useDispatch, useSelector } from "react-redux";
+import { Link } from "@tanstack/react-router";
 import { Box, Stack, IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import { Search, X } from "lucide-react";
-import { IoSearchSharp } from "react-icons/io5";
 import login from "@services/login";
-import { logout } from "@store/authSlice";
-import type { RootState } from "@store/store";
-import HoverDropdown from "@components/common/HoverDropdown";
 
+// Components & Hooks
+import HoverDropdown from "@components/common/HoverDropdown";
+import HeaderSearchBar from "./HeaderSearchBar";
+import { useHeader } from "@hooks/useHeader";
+
+// Styles
 import {
   HeaderContainer,
   ContentWrapper,
@@ -16,11 +16,7 @@ import {
   NavList,
   NavItemText,
   UserBadge,
-  SearchContainer,
-  SearchContent,
-  SearchInput,
-  ClearButton,
-} from "@styles/header.styles";
+} from "@styles/Header.styles";
 
 // Constants
 const HOME_PATH = "/";
@@ -28,73 +24,34 @@ const AVATAR_INITIAL = "A";
 const SEARCH_ICON_SIZE = 24;
 const LOGIN_TEXT = "đăng nhập";
 
+const MENU_PROPS = {
+  anchorOrigin: { vertical: "bottom" as const, horizontal: "center" as const },
+  transformOrigin: { vertical: "top" as const, horizontal: "center" as const },
+};
+
+// Data Menu (Có thể tách ra file constants riêng nếu muốn)
 const MOVIE_MENU_ITEMS = [
   { label: "Popular", path: "/browse/movie/popular" },
   { label: "Now Playing", path: "/browse/movie/now-playing" },
   { label: "Upcoming", path: "/browse/movie/upcoming" },
   { label: "Top Rated", path: "/browse/movie/top-rated" },
-] as const;
+];
 
 const TV_MENU_ITEMS = [
   { label: "Popular", path: "/browse/tv/popular" },
   { label: "Airing Today", path: "/browse/tv/airing-today" },
   { label: "On TV", path: "/browse/tv/on-the-air" },
   { label: "Top Rated", path: "/browse/tv/top-rated" },
-] as const;
-
-const MENU_PROPS = {
-  anchorOrigin: { vertical: "bottom" as const, horizontal: "center" as const },
-  transformOrigin: { vertical: "top" as const, horizontal: "center" as const },
-};
+];
 
 const Header = () => {
-  const [textInput, setTextInput] = useState("");
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-
-  const router = useRouterState();
-  const isHomePage = router.location.pathname === HOME_PATH;
-  const dispatch = useDispatch();
-  const sessionId = useSelector((state: RootState) => state.auth.sessionId);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    setIsSearchOpen(false);
-    setTextInput("");
-  }, [router.location.pathname]);
-
-  const showSearchBar = isHomePage || isSearchOpen;
-
-  const handleNavigate = useCallback(
-    (path: string) => {
-      navigate({ to: path });
-    },
-    [navigate],
-  );
-
-  const handleLogout = useCallback(() => {
-    dispatch(logout());
-    setAnchorElUser(null);
-  }, [dispatch]);
-
-  const handleUserMenuClose = useCallback(() => {
-    setAnchorElUser(null);
-  }, []);
-
-  const handleUserMenuOpen = useCallback((e: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(e.currentTarget);
-  }, []);
-
-  const handleSearchToggle = useCallback(() => {
-    setIsSearchOpen((prev) => !prev);
-  }, []);
+  const { state, actions } = useHeader();
 
   return (
     <>
-      {/* --- Main Header --- */}
       <HeaderContainer>
         <ContentWrapper>
-          {/* LEFT SIDE: Logo & Menu */}
+          {/* LEFT: Logo & Nav */}
           <Stack direction="row" alignItems="center">
             <Link to={HOME_PATH}>
               <Logo src="/images/movie_logo2.png" alt="movie" />
@@ -104,7 +61,7 @@ const Header = () => {
               <li>
                 <HoverDropdown label="Movies">
                   {MOVIE_MENU_ITEMS.map((item) => (
-                    <MenuItem key={item.path} onClick={() => handleNavigate(item.path)}>
+                    <MenuItem key={item.path} onClick={() => actions.handleNavigate(item.path)}>
                       {item.label}
                     </MenuItem>
                   ))}
@@ -113,7 +70,7 @@ const Header = () => {
               <li>
                 <HoverDropdown label="TV Shows">
                   {TV_MENU_ITEMS.map((item) => (
-                    <MenuItem key={item.path} onClick={() => handleNavigate(item.path)}>
+                    <MenuItem key={item.path} onClick={() => actions.handleNavigate(item.path)}>
                       {item.label}
                     </MenuItem>
                   ))}
@@ -122,26 +79,24 @@ const Header = () => {
             </NavList>
           </Stack>
 
-          {/* RIGHT SIDE: User & Search */}
+          {/* RIGHT: User & Search Toggle */}
           <Stack direction="row" alignItems="center" spacing={2}>
-            {/* User Section */}
             <Box>
-              {sessionId ? (
+              {state.sessionId ? (
                 <>
-                  <UserBadge onClick={handleUserMenuOpen}>
+                  <UserBadge onClick={actions.handleUserMenuOpen}>
                     <Typography fontSize="inherit" fontWeight="inherit">
                       {AVATAR_INITIAL}
                     </Typography>
                   </UserBadge>
-
                   <Menu
-                    anchorEl={anchorElUser}
-                    open={Boolean(anchorElUser)}
-                    onClose={handleUserMenuClose}
+                    anchorEl={state.anchorElUser}
+                    open={Boolean(state.anchorElUser)}
+                    onClose={actions.handleUserMenuClose}
                     {...MENU_PROPS}
                     sx={{ mt: 1 }}
                   >
-                    <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+                    <MenuItem onClick={actions.handleLogout}>Log Out</MenuItem>
                   </Menu>
                 </>
               ) : (
@@ -151,14 +106,13 @@ const Header = () => {
               )}
             </Box>
 
-            {/* Search Icon Toggle */}
             <IconButton
               disableRipple
-              onClick={handleSearchToggle}
-              color="secondary" // Sử dụng màu secondary (blue) từ theme
+              onClick={actions.handleSearchToggle}
+              color="secondary"
               sx={{ p: 0 }}
             >
-              {isSearchOpen && !isHomePage ? (
+              {state.isSearchOpen && !state.isHomePage ? (
                 <X size={SEARCH_ICON_SIZE} />
               ) : (
                 <Search size={SEARCH_ICON_SIZE} />
@@ -168,26 +122,14 @@ const Header = () => {
         </ContentWrapper>
       </HeaderContainer>
 
-      {/* --- Search Bar --- */}
-      {showSearchBar && (
-        <SearchContainer isSticky={isHomePage}>
-          <SearchContent onSubmit={(e) => e.preventDefault()}>
-            <IoSearchSharp size={SEARCH_ICON_SIZE} />
-
-            <SearchInput
-              placeholder="Search for a movie, tv show,..."
-              value={textInput}
-              onChange={(e) => setTextInput(e.target.value)}
-              endAdornment={
-                textInput && (
-                  <ClearButton size="small" onClick={() => setTextInput("")}>
-                    <X size={16} />
-                  </ClearButton>
-                )
-              }
-            />
-          </SearchContent>
-        </SearchContainer>
+      {/* SEARCH BAR SUB-COMPONENT */}
+      {state.showSearchBar && (
+        <HeaderSearchBar
+          isSticky={state.isHomePage}
+          value={state.textInput}
+          onChange={actions.setTextInput}
+          onClear={actions.handleClearSearch}
+        />
       )}
     </>
   );

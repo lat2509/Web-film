@@ -1,12 +1,14 @@
 import { styled, Box, Typography } from "@mui/material";
 
-export const SectionContainer = styled(Box)(({ theme }) => ({
+export const SectionContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "hasBackground",
+})<{ hasBackground?: boolean }>(({ theme, hasBackground }) => ({
   display: "flex",
   justifyContent: "center",
   width: "100%",
   position: "relative",
   paddingTop: theme.spacing(4),
-  backgroundImage: "url(/images/trending-bg.svg)",
+  backgroundImage: hasBackground ? "url(/images/trending-bg.svg)" : "none",
   backgroundRepeat: "no-repeat",
   backgroundPosition: "bottom",
 }));

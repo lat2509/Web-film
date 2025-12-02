@@ -94,7 +94,7 @@ export const TrailerImage = styled("img")({
   display: "block",
 });
 
-export const PlayIconOverlay = styled(Box)(() => ({
+export const PlayIconOverlay = styled(Box)(({ theme }) => ({
   position: "absolute",
   top: 0,
   left: 0,
@@ -104,6 +104,11 @@ export const PlayIconOverlay = styled(Box)(() => ({
   alignItems: "center",
   justifyContent: "center",
   zIndex: 2,
+  "& .play-icon": {
+    fontSize: "3rem",
+    color: theme.palette.common.white,
+    transition: "transform 0.3s ease",
+  },
 }));
 
 export const MovieTitle = styled(Typography)(({ theme }) => ({

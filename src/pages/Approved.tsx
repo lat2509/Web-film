@@ -1,32 +1,38 @@
-// src/pages/Approved.tsx
-import { useEffect } from "react";
-import { useNavigate } from "@tanstack/react-router"; // Hoặc react-router-dom
-import { getSessionId } from "@api/authApi";
-import { useDispatch } from "react-redux";
-import { loginSuccess } from "@store/authSlice";
+import { useEffect, useRef } from "react";
+import { Box, CircularProgress, Typography } from "@mui/material";
+
+// Hooks
+import { useProcessLogin } from "@hooks/useProcessLogin";
 
 const Approved = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  // Lấy params từ URL (?request_token=...)
-  const searchParams = new URLSearchParams(window.location.search);
-  const requestToken = searchParams.get("request_token");
+  const { processLogin } = useProcessLogin();
+  const isCalled = useRef(false);
 
   useEffect(() => {
-    if (requestToken) {
-      getSessionId(requestToken)
-        .then((res) => {
-          dispatch(loginSuccess(res.data.session_id));
-          navigate({ to: "/" });
-        })
-        .catch((err) => {
-          console.error("Lỗi tạo session", err);
-          navigate({ to: "/" });
-        });
-    }
-  }, [requestToken, navigate]);
+    const searchParams = new URLSearchParams(window.location.search);
+    const requestToken = searchParams.get("request_token");
 
-  return <div>Đang xử lý đăng nhập... Vui lòng chờ...</div>;
+    if (requestToken && !isCalled.current) {
+      isCalled.current = true;
+      processLogin(requestToken);
+    }
+  }, [processLogin]);
+
+  return (
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      minHeight="60vh"
+      gap={2}
+    >
+      <CircularProgress size={60} thickness={4} />
+      <Typography variant="h6" color="text.secondary">
+        Processing your login...
+      </Typography>
+    </Box>
+  );
 };
 
 export default Approved;

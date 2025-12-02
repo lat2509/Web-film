@@ -1,29 +1,22 @@
-import React, { useState, useCallback } from "react";
-import { Menu, Box } from "@mui/material";
+import { Menu } from "@mui/material";
 import type { HoverDropdownType } from "@app-types/type";
-import { NavItemText } from "@styles/header.styles";
+
+// Hooks & Styles
+import { useMenu } from "@hooks/useMenu";
+import { Wrapper, DropdownButton } from "@styles/HoverDropDown.styles";
 
 const HoverDropdown = ({ label, children }: HoverDropdownType) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-
-  const handleOpen = useCallback((event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  }, []);
-
-  const handleClose = useCallback(() => {
-    setAnchorEl(null);
-  }, []);
+  const { anchorEl, open, handleOpen, handleClose } = useMenu();
 
   return (
-    <Box sx={{ display: "flex", height: "100%", alignItems: "center" }}>
-      <NavItemText
+    <Wrapper>
+      <DropdownButton
         aria-owns={open ? "mouse-over-menu" : undefined}
         aria-haspopup="true"
         onClick={handleOpen}
       >
         {label}
-      </NavItemText>
+      </DropdownButton>
 
       <Menu
         id="mouse-over-menu"
@@ -40,7 +33,7 @@ const HoverDropdown = ({ label, children }: HoverDropdownType) => {
       >
         {children}
       </Menu>
-    </Box>
+    </Wrapper>
   );
 };
 

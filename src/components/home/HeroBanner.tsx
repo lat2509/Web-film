@@ -9,11 +9,10 @@ import {
   SearchForm,
   SearchInput,
   SearchButton,
-} from "@styles/heroBanner.styles";
+} from "@styles/HeroBanner.styles";
 
 const HeroBanner = ({ bgImage }: HeroBannerProps) => {
   return (
-    // Truyền bgImage vào Styled Component để xử lý CSS
     <HeroContainer bgImage={bgImage}>
       <ContentWrapper>
         {/* Text Section */}
@@ -25,7 +24,6 @@ const HeroBanner = ({ bgImage }: HeroBannerProps) => {
         </div>
 
         {/* Search Section */}
-        {/* Dùng SearchForm (thẻ form) để handle submit chuẩn HTML */}
         <SearchForm onSubmit={(e) => e.preventDefault()}>
           <label htmlFor="inner-search" style={{ width: "100%" }}>
             <SearchInput

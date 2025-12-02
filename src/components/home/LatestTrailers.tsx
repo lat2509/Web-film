@@ -21,7 +21,7 @@ import {
   PlayIconOverlay,
   MovieTitle,
   MovieSubtitle,
-} from "@styles/lastestTrailer.styles";
+} from "@styles/LastestTrailer.styles";
 
 const LatestTrailers = ({ data, value, onToggle, onPlay }: LatestTrailersProps) => {
   const envImgUrl = import.meta.env.VITE_TMDB_IMG_URL;
@@ -64,10 +64,7 @@ const LatestTrailers = ({ data, value, onToggle, onPlay }: LatestTrailersProps) 
                 />
 
                 <PlayIconOverlay>
-                  <FaPlay
-                    className="play-icon"
-                    style={{ fontSize: "3rem", color: "white", transition: "transform 0.3s" }}
-                  />
+                  <FaPlay className="play-icon" />
                 </PlayIconOverlay>
               </ImageWrapper>
 

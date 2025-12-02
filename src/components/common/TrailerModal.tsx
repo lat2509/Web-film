@@ -1,11 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
 import { Modal, CircularProgress, Box } from "@mui/material";
 import { IoClose } from "react-icons/io5";
+import type { TrailerModalProp } from "@app-types/type";
+import { useTrailer } from "@hooks/useTrailer";
 
-import type { TrailerModalProp, VidType } from "@app-types/type";
-import { trailerVideo } from "@api/moviesApi";
-
-// IMPORT STYLED COMPONENTS
 import {
   ModalBox,
   ModalHeader,
@@ -13,19 +10,10 @@ import {
   CloseButton,
   VideoWrapper,
   Iframe,
-} from "@styles/videoModal.styles";
+} from "@styles/VideoModal.styles";
 
 const TrailerModal = ({ id, type, onClose }: TrailerModalProp) => {
-  const { data: videoTrailer, isLoading } = useQuery({
-    queryKey: ["videoTrailer", id, type],
-    queryFn: async () => {
-      const res = await trailerVideo(type, id, "en-US");
-      const results = res.data.results;
-      return results.find((vid: VidType) => vid.type === "Trailer" && vid.site === "YouTube");
-    },
-    enabled: !!id,
-    staleTime: 1000 * 60 * 15,
-  });
+  const { data: videoTrailer, isLoading } = useTrailer({ id, type });
 
   const origin = window.location.origin;
 

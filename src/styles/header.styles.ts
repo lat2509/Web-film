@@ -63,7 +63,7 @@ export const UserBadge = styled(Box)(({ theme }) => ({
   width: 32,
   borderRadius: "50%",
   border: "1px solid rgba(255,255,255,0.2)",
-  backgroundColor: theme.palette.success.main, // Dùng màu success từ theme
+  backgroundColor: theme.palette.success.main,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -89,7 +89,7 @@ export const SearchContainer = styled(Box, {
   display: "flex",
   justifyContent: "center",
   position: isSticky ? "sticky" : "absolute",
-  top: isSticky ? 0 : "100%",
+  top: isSticky ? 0 : 64,
   left: 0,
 }));
 

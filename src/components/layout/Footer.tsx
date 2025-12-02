@@ -7,7 +7,7 @@ import {
   FooterColumn,
   ColumnTitle,
   FooterLink,
-} from "@styles/footer.styles";
+} from "@styles/Footer.styles";
 
 const FOOTER_LINKS = [
   {

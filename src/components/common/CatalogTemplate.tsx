@@ -1,10 +1,3 @@
-import { Fragment } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { mediaList } from "@api/moviesApi";
-import type { MovieType } from "@app-types/type";
-import { formatDate } from "@utils/formatters";
-
-// MUI Imports
 import {
   AccordionSummary,
   AccordionDetails,
@@ -18,10 +11,15 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-// Internal Components
+// Hooks & Utils
+import { useCatalog } from "@hooks/useCatalog";
+import { formatDate } from "@utils/formatters";
+import { getRatingHexColor } from "@utils/formatters";
+
+// Components
 import AvailabilitiesFilter from "./AvailabilitiesFilter";
 
-// IMPORT STYLED COMPONENTS
+// Styles
 import {
   PageContainer,
   ContentWrapper,
@@ -39,10 +37,10 @@ import {
   CardTitle,
   CardDate,
   LoadMoreButton,
-} from "@styles/catalog.styles";
+} from "@styles/Catalog.styles";
 
 // Constants
-const AVAILABILITIES_OPTIONS = ["Stream", "Free", "Ads", "Rent", "Buy", "Coming Soon"] as const;
+const AVAILABILITIES_OPTIONS = ["Stream", "Free", "Ads", "Rent", "Buy", "Coming Soon"];
 const RELEASE_DATE_OPTIONS = [
   "Theatrical (limited)",
   "Theatrical",
@@ -50,7 +48,7 @@ const RELEASE_DATE_OPTIONS = [
   "Digital",
   "Physical",
   "TV",
-] as const;
+];
 const SORT_OPTIONS = [
   { label: "Popularity Descending", value: "popularity.desc" },
   { label: "Popularity Ascending", value: "popularity.asc" },
@@ -60,13 +58,7 @@ const SORT_OPTIONS = [
   { label: "Release Date Ascending", value: "primary_release_date.asc" },
   { label: "Title (A-Z)", value: "title.asc" },
   { label: "Title (Z-A)", value: "title.desc" },
-] as const;
-
-const getRatingColor = (vote: number): string => {
-  if (vote >= 7) return "#21d07a";
-  if (vote >= 4 && vote < 7) return "#d2d531";
-  return "#db2360";
-};
+];
 
 interface CatalogTemplateProps {
   catalogName: string;
@@ -77,39 +69,25 @@ interface CatalogTemplateProps {
 const CatalogTemplate = ({ catalogName, type, category }: CatalogTemplateProps) => {
   const envImgUrl = import.meta.env.VITE_TMDB_IMG_URL;
 
-  const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["movie", category, type],
-    initialPageParam: 1,
-    queryFn: async ({ pageParam = 1 }) => {
-      const res = await mediaList(type, category, "en-US", pageParam);
-      return res.data;
-    },
-    getNextPageParam: (lastPage) => {
-      if (lastPage.page < lastPage.total_pages) {
-        return lastPage.page + 1;
-      }
-      return undefined;
-    },
+  // --- GỌI HOOK ---
+  const { flatData, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } = useCatalog({
+    type,
+    category,
   });
 
   return (
     <PageContainer>
       <ContentWrapper>
-        {/* Title */}
         <PageTitle variant="h5">{catalogName}</PageTitle>
 
         <LayoutContainer>
-          {/* --- LEFT SIDEBAR (Filter & Sort) --- */}
+          {/* --- SIDEBAR --- */}
           <Sidebar>
-            {/* Sort Accordion */}
             <StyledAccordion defaultExpanded>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <FilterTitle>Sort</FilterTitle>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography variant="body2" sx={{ mb: 1 }}>
-                  Sort Results By
-                </Typography>
                 <FormControl size="small" fullWidth>
                   <InputLabel>Sort</InputLabel>
                   <Select label="Sort" defaultValue="">
@@ -123,7 +101,6 @@ const CatalogTemplate = ({ catalogName, type, category }: CatalogTemplateProps) 
               </AccordionDetails>
             </StyledAccordion>
 
-            {/* Filters Accordion */}
             <StyledAccordion defaultExpanded>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <FilterTitle>Filters</FilterTitle>
@@ -135,63 +112,49 @@ const CatalogTemplate = ({ catalogName, type, category }: CatalogTemplateProps) 
                   </Typography>
                   <AvailabilitiesFilter
                     type="Search all availabilities?"
-                    options={[...AVAILABILITIES_OPTIONS]}
+                    options={AVAILABILITIES_OPTIONS}
                   />
                 </Box>
                 <Box>
                   <Typography variant="body2" sx={{ mb: 1 }}>
                     Release Dates
                   </Typography>
-                  <AvailabilitiesFilter
-                    type="Search all release?"
-                    options={[...RELEASE_DATE_OPTIONS]}
-                  />
+                  <AvailabilitiesFilter type="Search all release?" options={RELEASE_DATE_OPTIONS} />
                 </Box>
               </AccordionDetails>
             </StyledAccordion>
           </Sidebar>
 
-          {/* --- RIGHT CONTENT (Grid Movies) --- */}
+          {/* --- MAIN CONTENT --- */}
           <MainContent>
             <GridContainer>
-              {data?.pages.map((group, i) => (
-                <Fragment key={i}>
-                  {group.results.map((movie: MovieType) => {
-                    const _title = movie.title || movie.name;
-                    const rating = Math.round(movie.vote_average * 10) / 10;
-                    // Lấy mã màu hex cho styled component
-                    const ratingHexColor = getRatingColor(movie.vote_average);
-                    const releaseDate = movie.release_date ?? movie.first_air_date;
+              {flatData.map((movie: any) => {
+                const _title = movie.title || movie.name;
+                const rating = Math.round(movie.vote_average * 10) / 10;
+                const ratingHex = getRatingHexColor(rating);
+                const releaseDate = movie.release_date ?? movie.first_air_date;
 
-                    return (
-                      <CardWrapper key={movie.id}>
-                        {/* Image */}
-                        <Box sx={{ overflow: "hidden" }}>
-                          <CardImage
-                            src={
-                              movie.poster_path
-                                ? `${envImgUrl}${movie.poster_path}`
-                                : "/placeholder.jpg"
-                            }
-                            alt={_title}
-                            title={_title}
-                            loading="lazy"
-                          />
-                        </Box>
-
-                        {/* Rating Circle: Truyền prop scoreColor vào */}
-                        <RatingCircle scoreColor={ratingHexColor}>{rating}</RatingCircle>
-
-                        {/* Text Content */}
-                        <CardContent>
-                          <CardTitle title={_title}>{_title}</CardTitle>
-                          <CardDate>{formatDate(releaseDate)}</CardDate>
-                        </CardContent>
-                      </CardWrapper>
-                    );
-                  })}
-                </Fragment>
-              ))}
+                return (
+                  <CardWrapper key={movie.id}>
+                    <Box sx={{ overflow: "hidden" }}>
+                      <CardImage
+                        src={
+                          movie.poster_path
+                            ? `${envImgUrl}${movie.poster_path}`
+                            : "/placeholder.jpg"
+                        }
+                        alt={_title}
+                        loading="lazy"
+                      />
+                    </Box>
+                    <RatingCircle scoreColor={ratingHex}>{rating}</RatingCircle>
+                    <CardContent>
+                      <CardTitle title={_title}>{_title}</CardTitle>
+                      <CardDate>{formatDate(releaseDate)}</CardDate>
+                    </CardContent>
+                  </CardWrapper>
+                );
+              })}
             </GridContainer>
 
             {/* Load More Button */}
