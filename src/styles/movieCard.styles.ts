@@ -32,9 +32,7 @@ export const CardImage = styled("img")({
   display: "block",
 });
 
-export const RatingCircle = styled(Box, { shouldForwardProp: (prop) => prop !== "scoreColor" })<{
-  scoreColor: string;
-}>(({ theme, scoreColor }) => ({
+export const RatingCircle = styled(Box)<{ scorecolor: string }>(({ theme, scorecolor }) => ({
   position: "absolute",
   top: 200,
   left: 8,
@@ -59,7 +57,7 @@ export const RatingCircle = styled(Box, { shouldForwardProp: (prop) => prop !== 
     right: 2,
     bottom: 2,
     borderRadius: "50%",
-    border: `2px solid ${scoreColor}`,
+    border: `2px solid ${scorecolor}`,
   },
 }));
 

@@ -38,6 +38,7 @@ import {
   CardDate,
   LoadMoreButton,
 } from "@styles/Catalog.styles";
+import type { MovieType } from "@app-types/type";
 
 // Constants
 const AVAILABILITIES_OPTIONS = ["Stream", "Free", "Ads", "Rent", "Buy", "Coming Soon"];
@@ -128,7 +129,7 @@ const CatalogTemplate = ({ catalogName, type, category }: CatalogTemplateProps) 
           {/* --- MAIN CONTENT --- */}
           <MainContent>
             <GridContainer>
-              {flatData.map((movie: any) => {
+              {flatData.map((movie: MovieType) => {
                 const _title = movie.title || movie.name;
                 const rating = Math.round(movie.vote_average * 10) / 10;
                 const ratingHex = getRatingHexColor(rating);
@@ -147,7 +148,7 @@ const CatalogTemplate = ({ catalogName, type, category }: CatalogTemplateProps) 
                         loading="lazy"
                       />
                     </Box>
-                    <RatingCircle scoreColor={ratingHex}>{rating}</RatingCircle>
+                    <RatingCircle scorecolor={ratingHex}>{rating}</RatingCircle>
                     <CardContent>
                       <CardTitle title={_title}>{_title}</CardTitle>
                       <CardDate>{formatDate(releaseDate)}</CardDate>

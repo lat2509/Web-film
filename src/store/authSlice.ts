@@ -10,10 +10,12 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginSuccess: (state, action) => {
-      ((state.sessionId = action.payload), localStorage.setItem("session_id", action.payload));
+      state.sessionId = action.payload;
+      localStorage.setItem("session_id", action.payload);
     },
     logout: (state) => {
-      ((state.sessionId = null), localStorage.removeItem("session_id"));
+      state.sessionId = null;
+      localStorage.removeItem("session_id");
     },
   },
 });

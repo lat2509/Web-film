@@ -3,12 +3,12 @@ import { formatDate, getRatingHexColor } from "@utils/formatters";
 
 import {
   CardContainer,
-  ImageWrapper,
+  CardDate,
   CardImage,
+  CardTitle,
+  ImageWrapper,
   RatingCircle,
   TextContent,
-  CardTitle,
-  CardDate,
 } from "@styles/MovieCard.styles";
 
 const MediaCard = ({ movie }: { movie: MovieType }) => {
@@ -28,7 +28,7 @@ const MediaCard = ({ movie }: { movie: MovieType }) => {
       </ImageWrapper>
 
       {/* Rating Circle */}
-      <RatingCircle scoreColor={ratingHex}>{rating}</RatingCircle>
+      <RatingCircle scorecolor={ratingHex}>{rating}</RatingCircle>
 
       {/* Content Section */}
       <TextContent>

@@ -20,11 +20,11 @@ export interface MediaType {
   backdrop_path: string;
 }
 
-export interface MediaSectionProps {
+export interface MediaSectionProps<T extends string> {
   title: string;
-  items: { label: string; value: string }[];
-  value: string;
-  onToggle: (val: any) => void;
+  items: { label: string; value: T }[];
+  value: T;
+  onToggle: (val: T) => void;
   data: MovieType[];
 }
 
@@ -36,8 +36,8 @@ export interface TrailerModalProp {
 
 export interface LatestTrailersProps {
   data: MediaType[];
-  value: string;
-  onToggle: (val: any) => void;
+  value: "popular" | "on_tv" | "in_theaters";
+  onToggle: (val: "popular" | "on_tv" | "in_theaters") => void;
   onPlay: (id: number) => void;
 }
 

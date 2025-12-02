@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaPlay } from "react-icons/fa";
 
 // Components
@@ -21,22 +21,19 @@ import {
   PlayIconOverlay,
   MovieTitle,
   MovieSubtitle,
-} from "@styles/LastestTrailer.styles";
+} from "@styles/LatestTrailer.styles";
 
 const LatestTrailers = ({ data, value, onToggle, onPlay }: LatestTrailersProps) => {
   const envImgUrl = import.meta.env.VITE_TMDB_IMG_URL;
-  const [bgTrailerImg, setBgTrailerImg] = useState("");
+
+  const [hoveredBackdrop, setHoveredBackdrop] = useState<string | null>(null);
 
   const currentType = value === "on_tv" ? "tv" : "movie";
 
-  useEffect(() => {
-    if (data && data.length > 0) {
-      setBgTrailerImg(data[0].backdrop_path);
-    }
-  }, [data]);
+  const currentBgImage = hoveredBackdrop || data?.[0]?.backdrop_path || "";
 
   return (
-    <TrailerSection bgImage={`${envImgUrl}${bgTrailerImg}`}>
+    <TrailerSection bgImage={currentBgImage ? `${envImgUrl}${currentBgImage}` : ""}>
       <ContentWrapper>
         {/* Header: Title + Toggle Switch */}
         <SectionHeader>
@@ -55,7 +52,10 @@ const LatestTrailers = ({ data, value, onToggle, onPlay }: LatestTrailersProps) 
         {/* Horizontal Scroll List */}
         <ScrollContainer>
           {data.map((movie) => (
-            <TrailerCard key={movie.id} onMouseEnter={() => setBgTrailerImg(movie.backdrop_path)}>
+            <TrailerCard
+              key={movie.id}
+              onMouseEnter={() => setHoveredBackdrop(movie.backdrop_path)}
+            >
               <ImageWrapper onClick={() => onPlay(movie.id)}>
                 <TrailerImage
                   src={`${envImgUrl}${movie.backdrop_path}`}

@@ -25,20 +25,22 @@ const MediaList = memo(({ data }: { data: MovieType[] }) => (
 
 MediaList.displayName = "MediaList";
 
-const MediaSection = memo(({ title, items, value, onToggle, data }: MediaSectionProps) => {
-  return (
-    <SectionContainer hasBackground={false}>
-      <ContentWrapper>
-        <SectionHeader>
-          <SectionTitle>{title}</SectionTitle>
-          <SwitchToggle items={items} value={value} onToggle={onToggle} />
-        </SectionHeader>
+const MediaSection = memo(
+  <T extends string>({ title, items, value, onToggle, data }: MediaSectionProps<T>) => {
+    return (
+      <SectionContainer hasBackground={false}>
+        <ContentWrapper>
+          <SectionHeader>
+            <SectionTitle>{title}</SectionTitle>
+            <SwitchToggle items={items} value={value} onToggle={onToggle} />
+          </SectionHeader>
 
-        <MediaList data={data} />
-      </ContentWrapper>
-    </SectionContainer>
-  );
-});
+          <MediaList data={data} />
+        </ContentWrapper>
+      </SectionContainer>
+    );
+  },
+);
 
 MediaSection.displayName = "MediaSection";
 

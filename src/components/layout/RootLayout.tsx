@@ -1,11 +1,12 @@
-import { Outlet } from "@tanstack/react-router";
+import { Outlet, useRouterState } from "@tanstack/react-router";
 import Header from "@components/layout/Header";
 import Footer from "@components/layout/Footer";
 
 const RootLayout = () => {
+  const router = useRouterState();
   return (
     <>
-      <Header />
+      <Header key={router.location.pathname} />
       <main>
         <Outlet />
       </main>

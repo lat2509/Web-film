@@ -13,6 +13,7 @@ const LatestTrailersSection = ({ onPlay }: LatestTrailersSectionProps) => {
 
   return (
     <LatestTrailers
+      key={trailerType}
       data={data}
       value={trailerType}
       onToggle={setTrailerType}

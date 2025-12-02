@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@store/authSlice";
@@ -18,13 +18,6 @@ export const useHeader = () => {
 
   const isHomePage = router.location.pathname === "/";
 
-  // 3. Effects
-  useEffect(() => {
-    setIsSearchOpen(false);
-    setTextInput("");
-  }, [router.location.pathname]);
-
-  // 4. Handlers
   const handleNavigate = useCallback((path: string) => navigate({ to: path }), [navigate]);
 
   const handleLogout = useCallback(() => {

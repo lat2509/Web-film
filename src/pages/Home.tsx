@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { useTrending } from "@hooks/useHomeData";
 import TrendingSection from "@components/movie/TrendingSection";
@@ -12,13 +12,8 @@ const Home = () => {
   const envImgUrl = import.meta.env.VITE_TMDB_IMG_URL;
 
   const { data: trendingMovies, isLoading, isError } = useTrending("day");
-
-  const bannerUrl = useMemo(() => {
-    if (!trendingMovies?.length) return "";
-    const randomMovie = trendingMovies[Math.floor(Math.random() * trendingMovies.length)];
-    return randomMovie.backdrop_path ? `${envImgUrl}${randomMovie.backdrop_path}` : "";
-  }, [trendingMovies, envImgUrl]);
-
+  const firstMovie = trendingMovies?.[0];
+  const bannerUrl = firstMovie?.backdrop_path ? `${envImgUrl}${firstMovie.backdrop_path}` : "";
   const [playingId, setPlayingId] = useState<number | null>(null);
   const [playingType, setPlayingType] = useState<"movie" | "tv">("movie");
 

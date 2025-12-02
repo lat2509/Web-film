@@ -116,7 +116,7 @@ export const CardImage = styled("img")({
   cursor: "pointer",
 });
 
-export const RatingCircle = styled(Box)<{ scoreColor: string }>(({ theme, scoreColor }) => ({
+export const RatingCircle = styled(Box)<{ scorecolor: string }>(({ theme, scorecolor }) => ({
   position: "absolute",
   top: 252,
   left: 12,
@@ -124,7 +124,7 @@ export const RatingCircle = styled(Box)<{ scoreColor: string }>(({ theme, scoreC
   height: 38,
   borderRadius: "50%",
   backgroundColor: theme.palette.common.black,
-  border: `2px solid ${scoreColor}`,
+  border: `2px solid ${scorecolor}`,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
