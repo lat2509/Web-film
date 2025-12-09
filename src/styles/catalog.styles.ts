@@ -1,4 +1,4 @@
-import { styled, Box, Typography, Accordion, Button } from "@mui/material";
+import { styled, Box, Typography, Accordion, Button, Stack } from "@mui/material";
 
 // --- LAYOUT CHUNG ---
 
@@ -67,6 +67,37 @@ export const StyledAccordion = styled(Accordion)(({ theme }) => ({
 export const FilterTitle = styled(Typography)(() => ({
   fontWeight: 600,
   fontSize: "1rem",
+}));
+
+// Search Button
+export const SearchContainer = styled(Stack)(({ theme }) => ({
+  marginTop: theme.spacing(1),
+  width: "100%",
+}));
+
+export const SearchButton = styled(Button)(({ theme }) => ({
+  width: "100%",
+  height: 48,
+  borderRadius: "20px",
+  fontWeight: 700,
+  textTransform: "capitalize",
+  fontSize: "1.1rem",
+
+  backgroundColor: theme.palette.secondary.main,
+  color: theme.palette.common.white,
+  boxShadow: theme.shadows[2],
+
+  transition: "all 0.2s ease-in-out",
+  "&:hover": {
+    backgroundColor: theme.palette.secondary.dark,
+    transform: "translateY(-2px)",
+    boxShadow: theme.shadows[4],
+  },
+
+  "&:disabled": {
+    backgroundColor: theme.palette.action.disabledBackground,
+    color: theme.palette.action.disabled,
+  },
 }));
 
 // --- MAIN GRID ---

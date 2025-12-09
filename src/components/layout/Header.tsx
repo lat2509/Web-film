@@ -18,32 +18,16 @@ import {
   UserBadge,
 } from "@styles/Header.styles";
 
-// Constants
-const HOME_PATH = "/";
-const AVATAR_INITIAL = "A";
-const SEARCH_ICON_SIZE = 24;
-const LOGIN_TEXT = "đăng nhập";
-
-const MENU_PROPS = {
-  anchorOrigin: { vertical: "bottom" as const, horizontal: "center" as const },
-  transformOrigin: { vertical: "top" as const, horizontal: "center" as const },
-};
-
-// Data Menu (Có thể tách ra file constants riêng nếu muốn)
-const MOVIE_MENU_ITEMS = [
-  { label: "Popular", path: "/browse/movie/popular" },
-  { label: "Now Playing", path: "/browse/movie/now-playing" },
-  { label: "Upcoming", path: "/browse/movie/upcoming" },
-  { label: "Top Rated", path: "/browse/movie/top-rated" },
-];
-
-const TV_MENU_ITEMS = [
-  { label: "Popular", path: "/browse/tv/popular" },
-  { label: "Airing Today", path: "/browse/tv/airing-today" },
-  { label: "On TV", path: "/browse/tv/on-the-air" },
-  { label: "Top Rated", path: "/browse/tv/top-rated" },
-];
-
+// constant
+import {
+  HOME_PATH,
+  MOVIE_MENU_ITEMS,
+  TV_MENU_ITEMS,
+  AVATAR_INITIAL,
+  MENU_PROPS,
+  LOGIN_TEXT,
+  SEARCH_ICON_SIZE,
+} from "@utils/constant";
 const Header = () => {
   const { state, actions } = useHeader();
 

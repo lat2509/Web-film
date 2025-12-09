@@ -1,6 +1,5 @@
 import { Modal, CircularProgress, Box } from "@mui/material";
 import { IoClose } from "react-icons/io5";
-import type { TrailerModalProp } from "@app-types/type";
 import { useTrailer } from "@hooks/useTrailer";
 
 import {
@@ -11,6 +10,12 @@ import {
   VideoWrapper,
   Iframe,
 } from "@styles/VideoModal.styles";
+
+export interface TrailerModalProp {
+  id: number;
+  type: "movie" | "tv";
+  onClose: () => void;
+}
 
 const TrailerModal = ({ id, type, onClose }: TrailerModalProp) => {
   const { data: videoTrailer, isLoading } = useTrailer({ id, type });

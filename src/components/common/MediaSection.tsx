@@ -1,7 +1,7 @@
 import { memo } from "react";
 
 // Types
-import type { MediaSectionProps, MovieType } from "@app-types/type";
+import type { MovieType } from "@app-types/type";
 
 // Components
 import SwitchToggle from "@components/common/SwitchToggle";
@@ -14,6 +14,14 @@ import {
   SectionTitle,
   HorizontalScroll,
 } from "@styles/TrendingSection.styles";
+
+export interface MediaSectionProps<T extends string> {
+  title: string;
+  items: { label: string; value: T }[];
+  value: T;
+  onToggle: (val: T) => void;
+  data: MovieType[]; // Sử dụng Entity đã định nghĩa chung
+}
 
 const MediaList = memo(({ data }: { data: MovieType[] }) => (
   <HorizontalScroll>

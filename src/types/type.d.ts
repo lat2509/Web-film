@@ -1,18 +1,17 @@
-export interface HoverDropdownType {
-  label: string;
-  children: ReactNode;
-}
-
+// Dùng chung cho Movie List, Search Result
 export interface MovieType {
   id: number;
   title: string;
-  name?: string;
+  name?: string; // Dùng cho TV Show
   poster_path: string;
   release_date: string;
-  first_air_date?: string;
+  first_air_date?: string; // Dùng cho TV Show
   vote_average: number;
+  // Có thể thêm media_type nếu cần phân biệt
+  media_type?: "movie" | "tv" | "person";
 }
 
+// Dùng cho backdrop, trailer section
 export interface MediaType {
   id: number;
   title: string;
@@ -20,27 +19,20 @@ export interface MediaType {
   backdrop_path: string;
 }
 
-export interface MediaSectionProps<T extends string> {
-  title: string;
-  items: { label: string; value: T }[];
-  value: T;
-  onToggle: (val: T) => void;
-  data: MovieType[];
-}
-
-export interface TrailerModalProp {
+// Dùng cho kết quả search (Gộp cả person, movie, tv)
+export interface SearchResultsFilm {
   id: number;
-  type: "movie" | "tv";
-  onClose: () => void;
+  name: string;
+  title: string;
+  overview: string;
+  backdrop_path: string;
+  poster_path: string;
+  profile_path: string; // Riêng cho Person
+  release_date: string;
+  first_air_date: string;
 }
 
-export interface LatestTrailersProps {
-  data: MediaType[];
-  value: "popular" | "on_tv" | "in_theaters";
-  onToggle: (val: "popular" | "on_tv" | "in_theaters") => void;
-  onPlay: (id: number) => void;
-}
-
+// Dùng cho Video/Trailer
 export interface VidType {
   id: number;
   site: string;
@@ -48,8 +40,4 @@ export interface VidType {
   name: string;
   key?: string;
   size?: number;
-}
-
-export interface HeroBannerProps {
-  bgImage: string;
 }

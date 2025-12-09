@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { trailerVideo } from "@api/moviesApi";
+import { getVideos } from "@api/moviesApi";
 import type { VidType } from "@app-types/type";
 
 interface UseTrailerProps {
@@ -11,7 +11,7 @@ export const useTrailer = ({ id, type }: UseTrailerProps) => {
   const query = useQuery({
     queryKey: ["videoTrailer", id, type],
     queryFn: async () => {
-      const res = await trailerVideo(type, id, "en-US");
+      const res = await getVideos(type, id);
       const results = res.data.results;
       const trailer = results.find(
         (vid: VidType) => vid.type === "Trailer" && vid.site === "YouTube",

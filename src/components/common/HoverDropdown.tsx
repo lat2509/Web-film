@@ -1,9 +1,14 @@
 import { Menu } from "@mui/material";
-import type { HoverDropdownType } from "@app-types/type";
+import type { ReactNode } from "react";
 
 // Hooks & Styles
 import { useMenu } from "@hooks/useMenu";
-import { Wrapper, DropdownButton } from "@styles/HoverDropDown.styles";
+import { Wrapper, DropdownButton } from "@styles/HoverDropdown.styles";
+
+export interface HoverDropdownType {
+  label: string;
+  children: ReactNode;
+}
 
 const HoverDropdown = ({ label, children }: HoverDropdownType) => {
   const { anchorEl, open, handleOpen, handleClose } = useMenu();

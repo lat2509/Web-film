@@ -9,12 +9,14 @@ const TrendingSection = () => {
   return (
     <MediaSection
       title="Trending"
-      items={[
-        { label: "Today", value: "day" },
-        { label: "This Week", value: "week" },
-      ]}
+      items={
+        [
+          { label: "Today", value: "day" },
+          { label: "This Week", value: "week" },
+        ] as const
+      }
       value={timeWindow}
-      onToggle={setTimeWindow}
+      onToggle={(val) => setTimeWindow(val as "day" | "week")}
       data={data}
     />
   );

@@ -1,5 +1,3 @@
-import type { HeroBannerProps } from "@app-types/type";
-
 // Import Styled Components
 import {
   HeroContainer,
@@ -10,7 +8,9 @@ import {
   SearchInput,
   SearchButton,
 } from "@styles/HeroBanner.styles";
-
+export interface HeroBannerProps {
+  bgImage: string;
+}
 const HeroBanner = ({ bgImage }: HeroBannerProps) => {
   return (
     <HeroContainer bgImage={bgImage}>

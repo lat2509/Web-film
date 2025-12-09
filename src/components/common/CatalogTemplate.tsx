@@ -8,6 +8,9 @@ import {
   Box,
   Typography,
   CircularProgress,
+  type SelectChangeEvent,
+  Autocomplete,
+  TextField,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
@@ -15,6 +18,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useCatalog } from "@hooks/useCatalog";
 import { formatDate } from "@utils/formatters";
 import { getRatingHexColor } from "@utils/formatters";
+import { useState } from "react";
 
 // Components
 import AvailabilitiesFilter from "./AvailabilitiesFilter";
@@ -37,29 +41,18 @@ import {
   CardTitle,
   CardDate,
   LoadMoreButton,
+  SearchContainer,
+  SearchButton,
 } from "@styles/Catalog.styles";
 import type { MovieType } from "@app-types/type";
-
-// Constants
-const AVAILABILITIES_OPTIONS = ["Stream", "Free", "Ads", "Rent", "Buy", "Coming Soon"];
-const RELEASE_DATE_OPTIONS = [
-  "Theatrical (limited)",
-  "Theatrical",
-  "Premiere",
-  "Digital",
-  "Physical",
-  "TV",
-];
-const SORT_OPTIONS = [
-  { label: "Popularity Descending", value: "popularity.desc" },
-  { label: "Popularity Ascending", value: "popularity.asc" },
-  { label: "Rating Descending", value: "vote_average.desc" },
-  { label: "Rating Ascending", value: "vote_average.asc" },
-  { label: "Release Date Descending", value: "primary_release_date.desc" },
-  { label: "Release Date Ascending", value: "primary_release_date.asc" },
-  { label: "Title (A-Z)", value: "title.asc" },
-  { label: "Title (Z-A)", value: "title.desc" },
-];
+// Constant
+import {
+  AVAILABILITIES_OPTIONS_1,
+  RELEASE_DATE_OPTIONS_1,
+  SORT_OPTIONS,
+  DEFAULT_SORT,
+} from "@utils/constant";
+import { useCountry, type Country } from "@hooks/useCountry";
 
 interface CatalogTemplateProps {
   catalogName: string;
@@ -71,16 +64,55 @@ const CatalogTemplate = ({ catalogName, type, category }: CatalogTemplateProps) 
   const envImgUrl = import.meta.env.VITE_TMDB_IMG_URL;
 
   // --- GỌI HOOK ---
+  const [filters, setFilters] = useState({
+    sort_by: DEFAULT_SORT,
+    watch_region: "US",
+    availabilities: [] as string[],
+    release_types: [] as number[],
+  });
+
+  const [activeFilters, setActiveFilters] = useState(filters);
+
+  const { data: countries = [] } = useCountry();
+
   const { flatData, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } = useCatalog({
     type,
     category,
+    filters: activeFilters,
   });
 
+  const handleSortChange = (e: SelectChangeEvent) => {
+    setFilters((prev) => ({ ...prev, sort_by: e.target.value }));
+  };
+
+  const handleFilterChange = (
+    key: "availabilities" | "release_types",
+    newValue: (string | number)[],
+  ) => {
+    setFilters((prev) => ({
+      ...prev,
+      [key]: newValue,
+    }));
+  };
+
+  const handleSearch = () => {
+    setActiveFilters(filters);
+  };
+
+  const handleChangeCountry = (
+    _e: React.SyntheticEvent<Element, Event>,
+    newValue: Country | null,
+  ) => {
+    setFilters((prev) => ({
+      ...prev,
+      watch_region: newValue ? newValue.iso_3166_1 : "US",
+    }));
+  };
+  const isSearchDisabled = JSON.stringify(filters) === JSON.stringify(activeFilters);
   return (
     <PageContainer>
       <ContentWrapper>
         <PageTitle variant="h5">{catalogName}</PageTitle>
-
         <LayoutContainer>
           {/* --- SIDEBAR --- */}
           <Sidebar>
@@ -91,7 +123,7 @@ const CatalogTemplate = ({ catalogName, type, category }: CatalogTemplateProps) 
               <AccordionDetails>
                 <FormControl size="small" fullWidth>
                   <InputLabel>Sort</InputLabel>
-                  <Select label="Sort" defaultValue="">
+                  <Select label="Sort" value={filters.sort_by} onChange={handleSortChange}>
                     {SORT_OPTIONS.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.label}
@@ -107,23 +139,52 @@ const CatalogTemplate = ({ catalogName, type, category }: CatalogTemplateProps) 
                 <FilterTitle>Filters</FilterTitle>
               </AccordionSummary>
               <AccordionDetails>
-                <Box sx={{ borderBottom: 1, borderColor: "divider", pb: 2, mb: 2 }}>
-                  <Typography variant="body2" sx={{ mb: 1 }}>
+                <Box mb={2} pb={2} borderBottom={1} borderColor="divider">
+                  <Typography variant="body2" mb={2}>
+                    Country (region)
+                  </Typography>
+                  <Autocomplete
+                    options={countries}
+                    getOptionLabel={(option: Country) => option.english_name}
+                    value={
+                      countries.find((c: Country) => c.iso_3166_1 === filters.watch_region) || null
+                    }
+                    onChange={handleChangeCountry}
+                    disableClearable
+                    renderInput={(params) => (
+                      <TextField {...params} size="small" placeholder="Filter" />
+                    )}
+                  />
+                </Box>
+                <Box pb={2} mb={2} borderBottom={1} borderColor="divider">
+                  <Typography variant="body2" mb={1}>
                     Availabilities
                   </Typography>
                   <AvailabilitiesFilter
                     type="Search all availabilities?"
-                    options={AVAILABILITIES_OPTIONS}
+                    options={AVAILABILITIES_OPTIONS_1}
+                    selectedValues={filters.availabilities}
+                    onChange={(vals) => handleFilterChange("availabilities", vals)}
                   />
                 </Box>
                 <Box>
-                  <Typography variant="body2" sx={{ mb: 1 }}>
+                  <Typography variant="body2" mb={1}>
                     Release Dates
                   </Typography>
-                  <AvailabilitiesFilter type="Search all release?" options={RELEASE_DATE_OPTIONS} />
+                  <AvailabilitiesFilter
+                    type="Search all release?"
+                    options={RELEASE_DATE_OPTIONS_1}
+                    selectedValues={filters.release_types}
+                    onChange={(vals) => handleFilterChange("release_types", vals)}
+                  />
                 </Box>
               </AccordionDetails>
             </StyledAccordion>
+            <SearchContainer>
+              <SearchButton variant="contained" onClick={handleSearch} disabled={isSearchDisabled}>
+                Search
+              </SearchButton>
+            </SearchContainer>
           </Sidebar>
 
           {/* --- MAIN CONTENT --- */}
@@ -172,7 +233,7 @@ const CatalogTemplate = ({ catalogName, type, category }: CatalogTemplateProps) 
             </LoadMoreButton>
 
             {isFetching && !isFetchingNextPage && (
-              <Box sx={{ mt: 2 }}>
+              <Box mt={2}>
                 <CircularProgress />
               </Box>
             )}

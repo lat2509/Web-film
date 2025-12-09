@@ -1,59 +1,72 @@
 import axiosClient from "./axiosClient";
 
-export const trendingMovies = (time_window: string) => {
-  return axiosClient.get(`/trending/movie/${time_window}`);
+export type MediaType = "movie" | "tv";
+export type TimeWindow = "day" | "week";
+
+const DEFAULT_LANG = "en-US";
+
+// 1. Trending (Xu hướng)
+export const getTrending = (mediaType: MediaType | "all", timeWindow: TimeWindow) => {
+  return axiosClient.get(`/trending/${mediaType}/${timeWindow}`);
 };
 
-export const nowPlayingMovies = (language: string, page: number) => {
-  return axiosClient.get("/movie/now_playing", {
+// 2. Get List (Danh sách phim theo danh mục)
+export const getMediaList = (type: MediaType, category: string, page = 1) => {
+  return axiosClient.get(`/${type}/${category}`, {
     params: {
-      language: language,
-      page: page,
+      page,
+      language: DEFAULT_LANG,
     },
   });
 };
 
-export const airingTVshows = (language: string, page: number) => {
-  return axiosClient.get("/tv/airing_today", {
+// 3. Discover
+export const discoverMedia = (type: MediaType, params: Record<string, any>) => {
+  return axiosClient.get(`/discover/${type}`, {
     params: {
-      language: language,
-      page: page,
+      language: DEFAULT_LANG,
+      ...params,
     },
   });
 };
 
-export const popularList = (media: string, language: string, page: number) => {
-  return axiosClient.get(`/${media}/popular`, {
+// 4. Details & Videos
+export const getVideos = (type: MediaType, id: number) => {
+  return axiosClient.get(`/${type}/${id}/videos`, {
+    params: { language: DEFAULT_LANG },
+  });
+};
+
+// 5. Search
+export const searchMulti = (query: string, page = 1) => {
+  return axiosClient.get("/search/multi", {
     params: {
-      language: language,
-      page: page,
+      query,
+      page,
+      language: DEFAULT_LANG,
     },
   });
 };
 
-export const freeToWatch = (media: string, language: string, page: number, watch_type: string) => {
-  return axiosClient.get(`/discover/${media}`, {
+export const searchByType = (type: string, query: string, page: number = 1) => {
+  return axiosClient.get(`/search/${type}`, {
     params: {
-      language: language,
-      page: page,
-      watch_type: watch_type,
+      query,
+      page,
+      language: DEFAULT_LANG,
+      include_adult: false,
     },
   });
 };
 
-export const trailerVideo = (type: "movie" | "tv", id: number, language: string) => {
-  return axiosClient.get(`${type}/${id}/videos`, {
-    params: {
-      language: language,
-    },
+// API lấy chi tiết phim
+export const getDetails = (type: MediaType, id: number) => {
+  return axiosClient.get(`/${type}/${id}`, {
+    params: { language: DEFAULT_LANG },
   });
 };
 
-export const mediaList = (media: string, catalog: string, language: string, page: number) => {
-  return axiosClient.get(`/${media}/${catalog}`, {
-    params: {
-      language: language,
-      page: page,
-    },
-  });
+// API lấy danh sách quốc gia
+export const getCountries = () => {
+  return axiosClient.get("/configuration/countries");
 };

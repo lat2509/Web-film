@@ -4,6 +4,8 @@ import RootLayout from "@components/layout/RootLayout";
 import Home from "@pages/Home";
 import Approved from "@pages/Approved";
 import CatalogPage from "@pages/CatalogPage";
+import SearchResultsPage from "@pages/SearchResultsPage";
+import z from "zod";
 
 // 1. Root Route
 const rootRoute = createRootRoute({
@@ -31,8 +33,25 @@ const approvedRoute = createRoute({
   component: Approved,
 });
 
-// 3. Route Tree ư
-const routeTree = rootRoute.addChildren([indexRoute, catalogRoute, approvedRoute]);
+const movieSearchSchema = z.object({
+  query: z.string().optional().default(""),
+  page: z.number().optional().default(1),
+});
+
+const searchResultRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/search",
+  component: SearchResultsPage,
+  validateSearch: (search) => movieSearchSchema.parse(search),
+});
+
+// 3. Route Tree
+const routeTree = rootRoute.addChildren([
+  indexRoute,
+  catalogRoute,
+  approvedRoute,
+  searchResultRoute,
+]);
 
 export const router = createRouter({ routeTree });
 
