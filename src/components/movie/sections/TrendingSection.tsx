@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MediaSection from "@components/common/MediaSection";
+import MediaSection from "@components/common/MediaSection/MediaSection";
 import { useTrending } from "@hooks/useHomeData";
 
 const TrendingSection = () => {

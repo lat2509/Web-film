@@ -21,7 +21,10 @@ export const getMediaList = (type: MediaType, category: string, page = 1) => {
 };
 
 // 3. Discover
-export const discoverMedia = (type: MediaType, params: Record<string, any>) => {
+export const discoverMedia = (
+  type: MediaType,
+  params: Record<string, string | number | boolean | string[] | undefined>,
+) => {
   return axiosClient.get(`/discover/${type}`, {
     params: {
       language: DEFAULT_LANG,

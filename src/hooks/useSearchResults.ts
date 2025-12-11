@@ -1,6 +1,6 @@
 import { searchByType } from "@api/moviesApi";
 import { keepPreviousData, useQueries, useQuery } from "@tanstack/react-query";
-import { SEARCH_RESULTS_OPTION } from "@utils/constant";
+import { SEARCH_RESULTS_OPTION } from "@utils/constants";
 
 export const useSearchResults = (query: string, type: string, page: number) => {
   const totalResultsQueries = useQueries({

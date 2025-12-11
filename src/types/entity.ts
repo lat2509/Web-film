@@ -18,7 +18,12 @@ export interface MediaType {
   name?: string;
   backdrop_path: string;
 }
-
+export interface KnownForWork {
+  id: number;
+  title: string;
+  name: string;
+  media_type: string;
+}
 // Dùng cho kết quả search (Gộp cả person, movie, tv)
 export interface SearchResultsFilm {
   id: number;
@@ -28,8 +33,10 @@ export interface SearchResultsFilm {
   backdrop_path: string;
   poster_path: string;
   profile_path: string; // Riêng cho Person
+  known_for_department: string; // Riêng cho Person
   release_date: string;
   first_air_date: string;
+  known_for: KnownForWork[];
 }
 
 // Dùng cho Video/Trailer

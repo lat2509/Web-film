@@ -2,8 +2,9 @@ import { Box, CircularProgress, Typography, Pagination, Stack } from "@mui/mater
 import { getRouteApi } from "@tanstack/react-router";
 import { useState } from "react";
 import { useSearchResults } from "@hooks/useSearchResults";
-import SearchSidebar from "@components/common/SearchSidebar";
-import SearchResultItem from "@components/common/SearchResultItem";
+import SearchSidebar from "@components/search/SearchSidebar";
+import SearchResultItem from "@components/search/SearchResultItem";
+import type { SearchResultsFilm } from "@app-types/entity";
 
 const SearchResultsPage = () => {
   const [type, setType] = useState<string>("movie");
@@ -56,7 +57,7 @@ const SearchResultsPage = () => {
             <>
               {/* Danh sách kết quả */}
               <Box>
-                {searchResults.map((item: any) => (
+                {searchResults.map((item: SearchResultsFilm) => (
                   <SearchResultItem key={item.id} item={item} type={type} />
                 ))}
               </Box>

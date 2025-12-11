@@ -1,6 +1,6 @@
 import { getRequestToken } from "@api/authApi";
 
-const login = async () => {
+const authService = async () => {
   try {
     const res = await getRequestToken();
     const requestToken = res.data.request_token;
@@ -11,4 +11,4 @@ const login = async () => {
   }
 };
 
-export default login;
+export default authService;

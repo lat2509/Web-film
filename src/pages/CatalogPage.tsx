@@ -1,5 +1,5 @@
 import { useParams } from "@tanstack/react-router";
-import CatalogTemplate from "@components/common/CatalogTemplate";
+import CatalogTemplate from "@components/catalog/CatalogTemplate";
 import { catalogRoute } from "@router/router";
 import { formatSlugTitle, formatSlugToApi } from "@utils/formatters";
 

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getVideos } from "@api/moviesApi";
-import type { VidType } from "@app-types/type";
+import type { VidType } from "@app-types/entity";
 
 interface UseTrailerProps {
   id: number;

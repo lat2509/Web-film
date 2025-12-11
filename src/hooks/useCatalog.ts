@@ -1,11 +1,19 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { discoverMedia, getMediaList } from "@api/moviesApi";
-import { DEFAULT_SORT, ENDPOINT_MAP } from "@utils/constant";
+import { DEFAULT_SORT, ENDPOINT_MAP } from "@utils/constants";
 
+export interface CatalogFilters {
+  sort_by?: string;
+  watch_region?: string;
+  availabilities?: string[];
+  release_types?: string[];
+  page?: number;
+  [key: string]: string | number | string[] | boolean | undefined;
+}
 interface UseCatalogProps {
   type: "movie" | "tv";
   category: string;
-  filters?: Record<string, any>;
+  filters?: CatalogFilters;
 }
 
 export const useCatalog = ({ type, category, filters = {} }: UseCatalogProps) => {

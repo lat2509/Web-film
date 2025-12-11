@@ -1,4 +1,4 @@
-import type { Option } from "@components/common/AvailabilitiesFilter";
+import type { Option } from "@components/common/AvailabilitiesFilter/AvailabilitiesFilter";
 
 // Catalog Constants
 export const AVAILABILITIES_OPTIONS = ["Stream", "Free", "Ads", "Rent", "Buy", "Coming Soon"];

@@ -21,7 +21,7 @@ import { getRatingHexColor } from "@utils/formatters";
 import { useState } from "react";
 
 // Components
-import AvailabilitiesFilter from "./AvailabilitiesFilter";
+import AvailabilitiesFilter from "@components/common/AvailabilitiesFilter/AvailabilitiesFilter";
 
 // Styles
 import {
@@ -43,15 +43,15 @@ import {
   LoadMoreButton,
   SearchContainer,
   SearchButton,
-} from "@styles/Catalog.styles";
-import type { MovieType } from "@app-types/type";
+} from "@components/catalog/Catalog.styles";
+import type { MovieType } from "@app-types/entity";
 // Constant
 import {
   AVAILABILITIES_OPTIONS_1,
   RELEASE_DATE_OPTIONS_1,
   SORT_OPTIONS,
   DEFAULT_SORT,
-} from "@utils/constant";
+} from "@utils/constants";
 import { useCountry, type Country } from "@hooks/useCountry";
 
 interface CatalogTemplateProps {

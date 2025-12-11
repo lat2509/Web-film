@@ -2,11 +2,11 @@ import { useState } from "react";
 import { FaPlay } from "react-icons/fa";
 
 // Components
-import SwitchToggle from "@components/common/SwitchToggle";
+import SwitchToggle from "@components/common/SwitchToggle/SwitchToggle";
 import TrailerName from "./TrailerName";
 
 // Types
-import type { LatestTrailersProps } from "@app-types/type";
+import type { MediaType } from "@app-types/entity";
 
 // Styled Components
 import {
@@ -21,7 +21,14 @@ import {
   PlayIconOverlay,
   MovieTitle,
   MovieSubtitle,
-} from "@styles/LatestTrailer.styles";
+} from "./LatestTrailers.styles";
+
+export interface LatestTrailersProps {
+  data: MediaType[];
+  value: "popular" | "on_tv" | "in_theaters";
+  onToggle: (val: "popular" | "on_tv" | "in_theaters") => void;
+  onPlay: (id: number) => void;
+}
 
 const LatestTrailers = ({ data, value, onToggle, onPlay }: LatestTrailersProps) => {
   const envImgUrl = import.meta.env.VITE_TMDB_IMG_URL;

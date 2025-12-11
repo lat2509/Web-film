@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MediaSection from "@components/common/MediaSection";
+import MediaSection from "@components/common/MediaSection/MediaSection";
 import { usePopular } from "@hooks/useHomeData";
 
 const PopularSection = () => {
@@ -14,7 +14,7 @@ const PopularSection = () => {
         { label: "On TV", value: "tv" },
       ]}
       value={type}
-      onToggle={setType}
+      onToggle={(val) => setType(val as "movie" | "tv")}
       data={data}
     />
   );

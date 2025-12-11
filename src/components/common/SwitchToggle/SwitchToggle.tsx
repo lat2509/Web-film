@@ -1,6 +1,6 @@
 import { memo, useCallback } from "react";
 import ToggleButton from "@mui/material/ToggleButton";
-import { StyledToggleButtonGroup } from "@styles/SwitchToggle.styles";
+import { StyledToggleButtonGroup } from "./SwitchToggle.styles";
 
 interface SwitchToggleProps<T extends string> {
   items: { label: string; value: T }[];

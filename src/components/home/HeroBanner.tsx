@@ -7,7 +7,7 @@ import {
   SearchForm,
   SearchInput,
   SearchButton,
-} from "@styles/HeroBanner.styles";
+} from "./HeroBanner.styles";
 export interface HeroBannerProps {
   bgImage: string;
 }

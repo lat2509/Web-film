@@ -1,4 +1,4 @@
-import type { MovieType } from "@app-types/type";
+import type { MovieType } from "@app-types/entity";
 import { formatDate, getRatingHexColor } from "@utils/formatters";
 
 import {
@@ -9,7 +9,7 @@ import {
   ImageWrapper,
   RatingCircle,
   TextContent,
-} from "@styles/MovieCard.styles";
+} from "./MediaCard.styles";
 
 const MediaCard = ({ movie }: { movie: MovieType }) => {
   const envImgUrl = import.meta.env.VITE_TMDB_IMG_URL;

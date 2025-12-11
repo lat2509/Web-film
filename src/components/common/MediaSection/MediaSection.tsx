@@ -1,11 +1,11 @@
 import { memo } from "react";
 
 // Types
-import type { MovieType } from "@app-types/type";
+import type { MovieType } from "@app-types/entity";
 
 // Components
-import SwitchToggle from "@components/common/SwitchToggle";
-import MediaCard from "@components/common/MediaCard";
+import SwitchToggle from "@components/common/SwitchToggle/SwitchToggle";
+import MediaCard from "@components/common/MediaCard/MediaCard";
 
 import {
   SectionContainer,
@@ -13,14 +13,14 @@ import {
   SectionHeader,
   SectionTitle,
   HorizontalScroll,
-} from "@styles/TrendingSection.styles";
+} from "@components/common/MediaSection/MediaSection.styles";
 
 export interface MediaSectionProps<T extends string> {
   title: string;
   items: { label: string; value: T }[];
   value: T;
   onToggle: (val: T) => void;
-  data: MovieType[]; // Sử dụng Entity đã định nghĩa chung
+  data: MovieType[];
 }
 
 const MediaList = memo(({ data }: { data: MovieType[] }) => (

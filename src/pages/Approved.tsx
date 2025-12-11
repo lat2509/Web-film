@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { Box, CircularProgress, Typography } from "@mui/material";
 
 // Hooks
-import { useProcessLogin } from "@hooks/useProcessLogin";
+import { useProcessLogin } from "@hooks/useAuth";
 
 const Approved = () => {
   const { processLogin } = useProcessLogin();

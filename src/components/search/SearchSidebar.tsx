@@ -5,7 +5,7 @@ import {
   SidebarHeader,
   StyledListItemButton,
   CountBadge,
-} from "@styles/SearchSidebar.styles";
+} from "./SearchSidebar.styles";
 
 interface SearchSidebarProps {
   stats: { id: string; label: string; count: number; isLoading: boolean }[];

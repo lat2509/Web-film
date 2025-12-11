@@ -9,7 +9,7 @@ import {
   CloseButton,
   VideoWrapper,
   Iframe,
-} from "@styles/VideoModal.styles";
+} from "./TrailerModal.styles";
 
 export interface TrailerModalProp {
   id: number;

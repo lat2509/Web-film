@@ -1,10 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { Box, Stack, IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import { Search, X } from "lucide-react";
-import login from "@services/login";
+import authService from "@services/authService";
 
 // Components & Hooks
-import HoverDropdown from "@components/common/HoverDropdown";
+import HoverDropdown from "@components/common/HoverDropdown/HoverDropdown";
 import HeaderSearchBar from "./HeaderSearchBar";
 import { useHeader } from "@hooks/useHeader";
 
@@ -16,7 +16,7 @@ import {
   NavList,
   NavItemText,
   UserBadge,
-} from "@styles/Header.styles";
+} from "./Header.styles";
 
 // constant
 import {
@@ -27,7 +27,7 @@ import {
   MENU_PROPS,
   LOGIN_TEXT,
   SEARCH_ICON_SIZE,
-} from "@utils/constant";
+} from "@utils/constants";
 const Header = () => {
   const { state, actions } = useHeader();
 
@@ -84,7 +84,7 @@ const Header = () => {
                   </Menu>
                 </>
               ) : (
-                <NavItemText onClick={() => login()} sx={{ fontSize: "16px" }}>
+                <NavItemText onClick={() => authService()} sx={{ fontSize: "16px" }}>
                   {LOGIN_TEXT}
                 </NavItemText>
               )}

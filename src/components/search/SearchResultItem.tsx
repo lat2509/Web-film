@@ -1,6 +1,6 @@
 // components/SearchResultItem.tsx
 import { useMemo } from "react";
-import type { SearchResultsFilm } from "@app-types/type";
+import type { SearchResultsFilm } from "@app-types/entity";
 import { formatDate } from "@utils/formatters";
 import { Typography, Box } from "@mui/material";
 // Import các styled components vừa tạo
@@ -12,7 +12,7 @@ import {
   ContentWrapper,
   TitleText,
   DescriptionText,
-} from "@styles/SearchResultItem.styles";
+} from "./SearchResultItem.styles";
 
 // --- TYPES & INTERFACES ---
 interface SearchResultItemProps {
@@ -31,7 +31,7 @@ const IMG_BASE_URL = import.meta.env.VITE_TMDB_IMG_URL;
 const PLACEHOLDER_IMG = "https://placehold.co/200x300?text=No+Image";
 
 // --- LOGIC NORMALIZATION (Giữ nguyên vì nó đã tốt) ---
-const normalizeData = (item: any, type: string): NormalizedData => {
+const normalizeData = (item: SearchResultsFilm, type: string): NormalizedData => {
   const path = item.poster_path || item.profile_path || item.backdrop_path;
   const image = path ? `${IMG_BASE_URL}${path}` : PLACEHOLDER_IMG;
   const title = item.title || item.name || "Untitled";
@@ -39,9 +39,11 @@ const normalizeData = (item: any, type: string): NormalizedData => {
   const subtitle = type !== "person" && dateStr ? formatDate(dateStr) : "";
 
   let description = item.overview || "No description available";
-  if (type === "person" && item.known_for) {
-    const knownWorks = item.known_for.map((work: any) => work.title || work.name).join(", ");
-    description = `Known for: ${knownWorks}`;
+  if (type === "person" && item.known_for_department) {
+    const knownWorks = item.known_for.map((work) => work.title || work.name).join(", ");
+    description = item.known_for_department
+      ? `${item.known_for_department}: ${knownWorks}`
+      : "No info";
   }
 
   return { title, image, subtitle, description };

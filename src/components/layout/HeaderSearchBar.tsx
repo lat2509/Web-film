@@ -1,12 +1,17 @@
 import { IoSearchSharp } from "react-icons/io5";
 import { X } from "lucide-react";
-import { SearchContainer, SearchContent, SearchInput, ClearButton } from "@styles/Header.styles";
+import {
+  SearchContainer,
+  SearchContent,
+  SearchInput,
+  ClearButton,
+} from "@components/layout/Header.styles";
 import { Autocomplete, Stack, Typography } from "@mui/material";
 import { useTrending } from "@hooks/useHomeData";
-import type { MovieType } from "@app-types/type";
+import type { MovieType } from "@app-types/entity";
 import { useEffect, useMemo, useState } from "react";
 import { useMoviesSearch } from "@hooks/useMoviesSearch";
-import { debounce } from "lodash";
+import { debounce, omit } from "lodash";
 import { useNavigate } from "@tanstack/react-router";
 
 interface HeaderSearchBarProps {
@@ -63,7 +68,7 @@ const HeaderSearchBar = ({ isSticky, value, onChange, onClear }: HeaderSearchBar
         return option.title || option.name || "";
       }}
       renderOption={(props, option: MovieType) => {
-        const { key, ...optionProps } = props;
+        const optionProps = omit(props, ["key"]);
         return (
           <Stack
             component="li"
@@ -86,8 +91,8 @@ const HeaderSearchBar = ({ isSticky, value, onChange, onClear }: HeaderSearchBar
         );
       }}
       renderInput={(param) => {
-        const { InputProps, InputLabelProps, inputProps, ...otherParams } = param;
-        const { color, ...otherinputProps } = inputProps;
+        const { InputProps, inputProps, ...otherParams } = omit(param, ["InputLabelProps"]);
+        const otherinputProps = omit(inputProps, ["color"]);
         return (
           <SearchContainer isSticky={isSticky}>
             <SearchContent onSubmit={(e) => e.preventDefault()}>

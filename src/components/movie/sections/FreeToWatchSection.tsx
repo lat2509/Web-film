@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MediaSection from "@components/common/MediaSection";
+import MediaSection from "@components/common/MediaSection/MediaSection";
 import { useFreeToWatch } from "@hooks/useHomeData";
 const FreeToWatchSection = () => {
   const [type, setType] = useState<"movie" | "tv">("movie");
@@ -13,7 +13,7 @@ const FreeToWatchSection = () => {
         { label: "On TV", value: "tv" },
       ]}
       value={type}
-      onToggle={setType}
+      onToggle={(val) => setType(val as "movie" | "tv")}
       data={data}
     />
   );

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { useTrending } from "@hooks/useHomeData";
-import TrendingSection from "@components/movie/TrendingSection";
-import PopularSection from "@components/movie/PopularSection";
-import FreeToWatchSection from "@components/movie/FreeToWatchSection";
+import TrendingSection from "@components/movie/sections/TrendingSection";
+import PopularSection from "@components/movie/sections/PopularSection";
+import FreeToWatchSection from "@components/movie/sections/FreeToWatchSection";
 import HeroBanner from "@components/home/HeroBanner";
-import TrailerModal from "@components/common/TrailerModal";
-import LatestTrailersSection from "@components/movie/LatestTrailerSection";
+import TrailerModal from "@components/common/TrailerModal/TrailerModal";
+import LatestTrailersSection from "@components/movie/sections/LatestTrailerSection";
 
 const Home = () => {
   const envImgUrl = import.meta.env.VITE_TMDB_IMG_URL;

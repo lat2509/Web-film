@@ -1,6 +1,6 @@
 import { Checkbox, FormControlLabel } from "@mui/material";
 // Import style cũ của bạn
-import { FilterContainer, ParentLabel, ChildGroup } from "@styles/AvailabilitiesFilter.styles";
+import { FilterContainer, ParentLabel, ChildGroup } from "./AvailabilitiesFilter.styles";
 
 // Interface
 export interface Option {

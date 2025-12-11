@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 // Hooks & Styles
 import { useMenu } from "@hooks/useMenu";
-import { Wrapper, DropdownButton } from "@styles/HoverDropdown.styles";
+import { Wrapper, DropdownButton } from "./HoverDropdown.styles";
 
 export interface HoverDropdownType {
   label: string;
