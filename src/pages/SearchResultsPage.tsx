@@ -1,4 +1,5 @@
-import { Box, Typography, Pagination, Stack } from "@mui/material";
+import { Box, Typography, Pagination, Stack, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles"; // Import thêm hook theme
 import { getRouteApi, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useSearchResults } from "@hooks/useSearchResults";
@@ -13,14 +14,19 @@ const SearchResultsPage = () => {
   const { query, page } = routeApi.useSearch();
   const navigate = routeApi.useNavigate();
 
-  // 1. Gọi custom hook
+  // --- 1. SETUP RESPONSIVE ---
+  const theme = useTheme();
+  // Kiểm tra nếu màn hình nhỏ hơn 'md' (900px) thì là mobile/tablet
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  // --- 2. GỌI CUSTOM HOOK ---
   const { searchResults, stats, totalPages, isLoading, isError } = useSearchResults(
     query,
     type,
     page || 1,
   );
 
-  // 2. Các hàm xử lý sự kiện
+  // --- 3. EVENT HANDLERS ---
   const handlePageChange = (_: unknown, value: number) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     navigate({ search: (prev) => ({ ...prev, page: value }) });
@@ -31,7 +37,6 @@ const SearchResultsPage = () => {
     navigate({ search: (prev) => ({ ...prev, page: 1 }) });
   };
 
-  // 3. Render Loading/Error
   if (isLoading) return <Loading />;
   if (isError)
     return (
@@ -40,12 +45,27 @@ const SearchResultsPage = () => {
       </Typography>
     );
 
-  // 4. Render Giao diện chính
   return (
     <Box display="flex" justifyContent="center">
-      <Box display="flex" px={4} py={5} width="100%" maxWidth="1400px" gap={4} mt={2}>
+      <Box
+        display="flex"
+        width="100%"
+        maxWidth="1400px"
+        mt={2}
+        // --- RESPONSIVE LAYOUT ---
+        // Mobile: Xếp dọc (column), Desktop: Xếp ngang (row)
+        flexDirection={{ xs: "column", md: "row" }}
+        // Mobile: Padding nhỏ (2=16px), Desktop: Padding lớn (4=32px)
+        px={{ xs: 2, md: 4 }}
+        py={{ xs: 3, md: 5 }}
+        // Mobile: Gap nhỏ, Desktop: Gap lớn
+        gap={{ xs: 2, md: 4 }}
+      >
         {/* SIDEBAR TRÁI */}
-        <SearchSidebar stats={stats} selectedType={type} onTypeChange={handleTypeChange} />
+        {/* Trên mobile nó sẽ nằm trên cùng và full width */}
+        <Box width={{ xs: "100%", md: "auto" }}>
+          <SearchSidebar stats={stats} selectedType={type} onTypeChange={handleTypeChange} />
+        </Box>
 
         {/* NỘI DUNG PHẢI */}
         <Box flex={1}>
@@ -55,10 +75,14 @@ const SearchResultsPage = () => {
               <Box>
                 {searchResults.map((item: SearchResultsFilm) => (
                   <Link
+                    // Lưu ý: Key phải đặt ở thẻ bao ngoài cùng (Link)
+                    key={item.id}
                     to="/$mediaType/$id"
                     params={{ mediaType: type as "movie" | "tv", id: String(item.id) }}
+                    // Bỏ gạch chân mặc định của thẻ a/Link
+                    style={{ textDecoration: "none" }}
                   >
-                    <SearchResultItem key={item.id} item={item} type={type} />
+                    <SearchResultItem item={item} type={type} />
                   </Link>
                 ))}
               </Box>
@@ -71,12 +95,15 @@ const SearchResultsPage = () => {
                   onChange={handlePageChange}
                   color="primary"
                   shape="rounded"
-                  size="large"
+                  // Mobile dùng size 'medium' cho đỡ chật, Desktop dùng 'large'
+                  size={isMobile ? "medium" : "large"}
+                  // Ẩn bớt các nút số nếu màn hình quá nhỏ (dưới 600px)
+                  siblingCount={isMobile ? 0 : 1}
                 />
               </Stack>
             </>
           ) : (
-            <Typography variant="h6" mt={2}>
+            <Typography variant="h6" mt={2} textAlign={{ xs: "center", md: "left" }}>
               No results found.
             </Typography>
           )}

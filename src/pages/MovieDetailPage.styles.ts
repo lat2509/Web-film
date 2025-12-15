@@ -1,11 +1,12 @@
 import { styled, Typography, Box, IconButton } from "@mui/material";
+import theme from "@styles/theme";
 
 interface HeroContainerProp {
-  bgImg: string;
+  bgimg: string;
 }
 
 // 1. Wrapper chính: Chỉnh lại Gradient sang màu tối (Dark Blue/Grey) chuẩn TMDB
-export const HeroDetailsWrapper = styled(Box)<HeroContainerProp>(({ theme, bgImg }) => ({
+export const HeroDetailsWrapper = styled(Box)<HeroContainerProp>(({ theme, bgimg }) => ({
   width: "100%",
   minHeight: "580px",
   display: "flex",
@@ -17,13 +18,13 @@ export const HeroDetailsWrapper = styled(Box)<HeroContainerProp>(({ theme, bgImg
       rgba(31.5, 10.5, 10.5, 0.84) 50%, 
       rgba(31.5, 10.5, 10.5, 0.84) 100%
     ),
-    url(${bgImg})
+    url(${bgimg})
   `,
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
   backgroundPosition: "center top",
   color: theme.palette.common.white,
-  marginTop: "46px",
+  marginTop: theme.spacing(4),
 }));
 
 export const HeroDetailsContainer = styled(Box)(() => ({
@@ -68,7 +69,7 @@ export const DetailsContentWrapper = styled(Box)(() => ({
 // --- TITLE SECTION ---
 export const DetailsContentTitle = styled(Box)(() => ({
   width: "100%",
-  marginBottom: "24px",
+  marginBottom: theme.spacing(3),
 }));
 
 export const TitleText = styled(Typography)(() => ({

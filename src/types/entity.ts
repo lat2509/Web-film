@@ -75,6 +75,17 @@ export interface Image {
   file_path: string;
 }
 
+export interface Keyword {
+  id: number;
+  name: string;
+}
+
+export interface Creator {
+  id: number;
+  name: string;
+  profile_path: string | null;
+}
+
 // --- 2. BASE INTERFACE (Chứa điểm chung) ---
 interface BaseDetail {
   id: number;
@@ -93,7 +104,7 @@ interface BaseDetail {
   credits: { cast: Cast[]; crew: Crew[] };
   videos: { results: Video[] };
   images: { backdrops: Image[]; posters: Image[]; logos: Image[] };
-  recommendations: { results: any[] };
+  recommendations: { results: string[] };
 }
 
 // --- 3. MOVIE DETAIL INTERFACE ---

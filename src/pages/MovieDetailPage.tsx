@@ -41,8 +41,9 @@ import {
   CastInfo,
   ActorName,
   CharacterName,
-} from "@styles/MovieDetailPage.styles";
+} from "./MovieDetailPage.styles";
 import { formatDate, formatRuntime } from "@utils/formatters";
+import type { Cast, Creator, Crew, Genre, Keyword } from "@app-types/entity";
 
 const routeApi = getRouteApi("/$mediaType/$id");
 
@@ -86,7 +87,7 @@ const MovieDetailPage = () => {
   const originalDate = data.release_date || data.first_air_date;
   const year = originalDate ? new Date(originalDate).getFullYear() : "";
   const date = formatDate(originalDate);
-  const genres = data.genres?.map((item: any) => item.name).join(", ");
+  const genres = data.genres?.map((item: Genre) => item.name).join(", ");
   const runtime = data.runtime ? formatRuntime(data.runtime) : "";
 
   const score = Math.round(data.vote_average * 10);
@@ -94,7 +95,7 @@ const MovieDetailPage = () => {
 
   const featuredCrew =
     data.credits?.crew
-      ?.filter((person: any) => ["Director", "Screenplay", "Writer", "Story"].includes(person.job))
+      ?.filter((person: Crew) => ["Director", "Screenplay", "Writer", "Story"].includes(person.job))
       .slice(0, 6) || [];
   const creators = data.created_by || [];
   const castList = data.credits?.cast?.slice(0, 9) || [];
@@ -126,7 +127,7 @@ const MovieDetailPage = () => {
 
   return (
     <Box sx={{ backgroundColor: "#fff", minHeight: "100vh", paddingBottom: "50px" }}>
-      <HeroDetailsWrapper bgImg={bgImgUrl}>
+      <HeroDetailsWrapper bgimg={bgImgUrl}>
         <HeroDetailsContainer>
           {/* Poster Img (Left) */}
           <PosterWrapper>
@@ -263,13 +264,13 @@ const MovieDetailPage = () => {
             <CrewGrid>
               {/* Nếu là Movie thì hiện Crew lọc được, TV thì hiện Creator */}
               {mediaType === "movie"
-                ? featuredCrew.map((person: any) => (
+                ? featuredCrew.map((person: Crew) => (
                     <CrewItem key={`${person.id}-${person.job}`}>
                       <CrewName>{person.name}</CrewName>
                       <CrewJob>{person.job}</CrewJob>
                     </CrewItem>
                   ))
-                : creators.map((person: any) => (
+                : creators.map((person: Creator) => (
                     <CrewItem key={person.id}>
                       <CrewName>{person.name}</CrewName>
                       <CrewJob>Creator</CrewJob>
@@ -286,7 +287,7 @@ const MovieDetailPage = () => {
 
           {castList.length > 0 ? (
             <CastScroller>
-              {castList.map((actor: any) => (
+              {castList.map((actor: Cast) => (
                 <CastCard key={actor.id}>
                   <CastImg
                     src={
@@ -342,7 +343,7 @@ const MovieDetailPage = () => {
               Keywords
             </Typography>
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-              {(data.keywords?.keywords || data.keywords?.results || []).map((kw: any) => (
+              {(data.keywords?.keywords || data.keywords?.results || []).map((kw: Keyword) => (
                 <Box
                   key={kw.id}
                   sx={{
