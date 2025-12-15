@@ -7,7 +7,6 @@ import {
   InputLabel,
   Box,
   Typography,
-  CircularProgress,
   type SelectChangeEvent,
   Autocomplete,
   TextField,
@@ -19,7 +18,7 @@ import { useCatalog } from "@hooks/useCatalog";
 import { formatDate } from "@utils/formatters";
 import { getRatingHexColor } from "@utils/formatters";
 import { useState } from "react";
-
+import { Link } from "@tanstack/react-router";
 // Components
 import AvailabilitiesFilter from "@components/common/AvailabilitiesFilter/AvailabilitiesFilter";
 
@@ -53,6 +52,7 @@ import {
   DEFAULT_SORT,
 } from "@utils/constants";
 import { useCountry, type Country } from "@hooks/useCountry";
+import Loading from "@components/common/Loading";
 
 interface CatalogTemplateProps {
   catalogName: string;
@@ -68,7 +68,7 @@ const CatalogTemplate = ({ catalogName, type, category }: CatalogTemplateProps) 
     sort_by: DEFAULT_SORT,
     watch_region: "US",
     availabilities: [] as string[],
-    release_types: [] as number[],
+    release_types: [] as string[],
   });
 
   const [activeFilters, setActiveFilters] = useState(filters);
@@ -199,19 +199,23 @@ const CatalogTemplate = ({ catalogName, type, category }: CatalogTemplateProps) 
                 return (
                   <CardWrapper key={movie.id}>
                     <Box sx={{ overflow: "hidden" }}>
-                      <CardImage
-                        src={
-                          movie.poster_path
-                            ? `${envImgUrl}${movie.poster_path}`
-                            : "/placeholder.jpg"
-                        }
-                        alt={_title}
-                        loading="lazy"
-                      />
+                      <Link to="/$mediaType/$id" params={{ mediaType: type, id: String(movie.id) }}>
+                        <CardImage
+                          src={
+                            movie.poster_path
+                              ? `${envImgUrl}${movie.poster_path}`
+                              : "/placeholder.jpg"
+                          }
+                          alt={_title}
+                          loading="lazy"
+                        />
+                      </Link>
                     </Box>
                     <RatingCircle scorecolor={ratingHex}>{rating}</RatingCircle>
                     <CardContent>
-                      <CardTitle title={_title}>{_title}</CardTitle>
+                      <Link to="/$mediaType/$id" params={{ mediaType: type, id: String(movie.id) }}>
+                        <CardTitle title={_title}>{_title}</CardTitle>
+                      </Link>
                       <CardDate>{formatDate(releaseDate)}</CardDate>
                     </CardContent>
                   </CardWrapper>
@@ -232,11 +236,7 @@ const CatalogTemplate = ({ catalogName, type, category }: CatalogTemplateProps) 
                   : "Nothing more to load"}
             </LoadMoreButton>
 
-            {isFetching && !isFetchingNextPage && (
-              <Box mt={2}>
-                <CircularProgress />
-              </Box>
-            )}
+            {isFetching && !isFetchingNextPage && <Loading />}
           </MainContent>
         </LayoutContainer>
       </ContentWrapper>

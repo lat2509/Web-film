@@ -1,5 +1,6 @@
 import type { MovieType } from "@app-types/entity";
 import { formatDate, getRatingHexColor } from "@utils/formatters";
+import { Link } from "@tanstack/react-router";
 
 import {
   CardContainer,
@@ -24,7 +25,12 @@ const MediaCard = ({ movie }: { movie: MovieType }) => {
     <CardContainer>
       {/* Image Section */}
       <ImageWrapper>
-        <CardImage src={posterSrc} alt={title} title={title} loading="lazy" />
+        <Link
+          to="/$mediaType/$id"
+          params={{ mediaType: movie.title ? "movie" : "tv", id: String(movie.id) }}
+        >
+          <CardImage src={posterSrc} alt={title} title={title} loading="lazy" />
+        </Link>
       </ImageWrapper>
 
       {/* Rating Circle */}
@@ -32,7 +38,12 @@ const MediaCard = ({ movie }: { movie: MovieType }) => {
 
       {/* Content Section */}
       <TextContent>
-        <CardTitle title={title}>{title}</CardTitle>
+        <Link
+          to="/$mediaType/$id"
+          params={{ mediaType: movie.title ? "movie" : "tv", id: String(movie.id) }}
+        >
+          <CardTitle title={title}>{title}</CardTitle>
+        </Link>
         <CardDate>{formatDate(rawDate)}</CardDate>
       </TextContent>
     </CardContainer>

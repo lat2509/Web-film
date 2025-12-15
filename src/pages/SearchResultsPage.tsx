@@ -1,10 +1,11 @@
-import { Box, CircularProgress, Typography, Pagination, Stack } from "@mui/material";
-import { getRouteApi } from "@tanstack/react-router";
+import { Box, Typography, Pagination, Stack } from "@mui/material";
+import { getRouteApi, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useSearchResults } from "@hooks/useSearchResults";
 import SearchSidebar from "@components/search/SearchSidebar";
 import SearchResultItem from "@components/search/SearchResultItem";
 import type { SearchResultsFilm } from "@app-types/entity";
+import Loading from "@components/common/Loading";
 
 const SearchResultsPage = () => {
   const [type, setType] = useState<string>("movie");
@@ -31,12 +32,7 @@ const SearchResultsPage = () => {
   };
 
   // 3. Render Loading/Error
-  if (isLoading)
-    return (
-      <Box p={5} display="flex" justifyContent="center">
-        <CircularProgress />
-      </Box>
-    );
+  if (isLoading) return <Loading />;
   if (isError)
     return (
       <Typography color="error" align="center" mt={5}>
@@ -58,7 +54,12 @@ const SearchResultsPage = () => {
               {/* Danh sách kết quả */}
               <Box>
                 {searchResults.map((item: SearchResultsFilm) => (
-                  <SearchResultItem key={item.id} item={item} type={type} />
+                  <Link
+                    to="/$mediaType/$id"
+                    params={{ mediaType: type as "movie" | "tv", id: String(item.id) }}
+                  >
+                    <SearchResultItem key={item.id} item={item} type={type} />
+                  </Link>
                 ))}
               </Box>
 

@@ -31,8 +31,6 @@ const MediaList = memo(({ data }: { data: MovieType[] }) => (
   </HorizontalScroll>
 ));
 
-MediaList.displayName = "MediaList";
-
 const MediaSection = memo(
   <T extends string>({ title, items, value, onToggle, data }: MediaSectionProps<T>) => {
     return (
@@ -49,7 +47,5 @@ const MediaSection = memo(
     );
   },
 );
-
-MediaSection.displayName = "MediaSection";
 
 export default MediaSection;

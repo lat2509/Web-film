@@ -1,8 +1,9 @@
 import { useEffect, useRef } from "react";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 // Hooks
 import { useProcessLogin } from "@hooks/useAuth";
+import Loading from "@components/common/Loading";
 
 const Approved = () => {
   const { processLogin } = useProcessLogin();
@@ -27,7 +28,7 @@ const Approved = () => {
       minHeight="60vh"
       gap={2}
     >
-      <CircularProgress size={60} thickness={4} />
+      <Loading />
       <Typography variant="h6" color="text.secondary">
         Processing your login...
       </Typography>

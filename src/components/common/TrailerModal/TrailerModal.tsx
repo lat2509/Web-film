@@ -1,4 +1,4 @@
-import { Modal, CircularProgress, Box } from "@mui/material";
+import { Modal, Box } from "@mui/material";
 import { IoClose } from "react-icons/io5";
 import { useTrailer } from "@hooks/useTrailer";
 
@@ -10,6 +10,7 @@ import {
   VideoWrapper,
   Iframe,
 } from "./TrailerModal.styles";
+import Loading from "../Loading";
 
 export interface TrailerModalProp {
   id: number;
@@ -45,9 +46,7 @@ const TrailerModal = ({ id, type, onClose }: TrailerModalProp) => {
         {/* Video Body */}
         <VideoWrapper>
           {isLoading ? (
-            <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-              <CircularProgress sx={{ color: "white" }} />
-            </Box>
+            <Loading />
           ) : videoTrailer ? (
             <Iframe
               title="Trailer"

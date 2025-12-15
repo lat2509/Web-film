@@ -28,3 +28,12 @@ export const formatSlugTitle = (slug: string) => {
 export const formatSlugToApi = (slug: string) => {
   return slug.replace(/-/g, "_");
 };
+
+//5. Chuyển đổi giờ
+export const formatRuntime = (minutes: number) => {
+  if (!minutes) return "";
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  if (hours === 0) return `${mins}m`;
+  return `${hours}h ${mins}m`;
+};

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaPlay } from "react-icons/fa";
-
+import { Link } from "@tanstack/react-router";
 // Components
 import SwitchToggle from "@components/common/SwitchToggle/SwitchToggle";
 import TrailerName from "./TrailerName";
@@ -75,7 +75,9 @@ const LatestTrailers = ({ data, value, onToggle, onPlay }: LatestTrailersProps) 
                 </PlayIconOverlay>
               </ImageWrapper>
 
-              <MovieTitle>{movie.title || movie.name}</MovieTitle>
+              <Link to="/$mediaType/$id" params={{ mediaType: currentType, id: String(movie.id) }}>
+                <MovieTitle>{movie.title || movie.name}</MovieTitle>
+              </Link>
 
               <MovieSubtitle>
                 <TrailerName id={movie.id} type={currentType} />

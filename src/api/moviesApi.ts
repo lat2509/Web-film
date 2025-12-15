@@ -65,7 +65,10 @@ export const searchByType = (type: string, query: string, page: number = 1) => {
 // API lấy chi tiết phim
 export const getDetails = (type: MediaType, id: number) => {
   return axiosClient.get(`/${type}/${id}`, {
-    params: { language: DEFAULT_LANG },
+    params: {
+      language: DEFAULT_LANG,
+      append_to_response: "videos,credits,images,recommendations,keywords,reviews,external_ids",
+    },
   });
 };
 

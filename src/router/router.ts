@@ -6,6 +6,7 @@ import Approved from "@pages/Approved";
 import CatalogPage from "@pages/CatalogPage";
 import SearchResultsPage from "@pages/SearchResultsPage";
 import z from "zod";
+import MovieDetailPage from "@pages/MovieDetailPage";
 
 // 1. Root Route
 const rootRoute = createRootRoute({
@@ -45,12 +46,23 @@ const searchResultRoute = createRoute({
   validateSearch: (search) => movieSearchSchema.parse(search),
 });
 
+const movieDetailRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: `$mediaType/$id`,
+  component: MovieDetailPage,
+  parseParams: (params) => ({
+    mediaType: params.mediaType as "movie" | "tv",
+    id: params.id,
+  }),
+});
+
 // 3. Route Tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
   catalogRoute,
   approvedRoute,
   searchResultRoute,
+  movieDetailRoute,
 ]);
 
 export const router = createRouter({ routeTree });
