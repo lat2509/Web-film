@@ -9,7 +9,7 @@ interface SwitchToggleProps<T extends string> {
 }
 
 // 1. Khai báo Component Inner (Chưa bọc memo)
-const SwitchToggleInner = <T extends string>({ items, value, onToggle }: SwitchToggleProps<T>) => {
+function SwitchToggleInner<T extends string>({ items, value, onToggle }: SwitchToggleProps<T>) {
   const handleChange = useCallback(
     (_event: React.MouseEvent<HTMLElement>, newValue: string | null) => {
       if (newValue !== null) {
@@ -34,7 +34,7 @@ const SwitchToggleInner = <T extends string>({ items, value, onToggle }: SwitchT
       ))}
     </StyledToggleButtonGroup>
   );
-};
+}
 
 // 2. Bọc memo và ÉP KIỂU (Quan trọng!)
 const SwitchToggle = memo(SwitchToggleInner) as typeof SwitchToggleInner;
