@@ -6,6 +6,7 @@
 ![TanStack Query](https://img.shields.io/badge/TanStack_Query-FF4154?logo=react-query&logoColor=white)
 ![Material UI](https://img.shields.io/badge/Material_UI-007FFF?logo=mui&logoColor=white)
 
+[![Live Demo](https://img.shields.io/badge/demo-online-green?logo=vercel&style=for-the-badge)](LINK_VERCEL_CUA_BAN)
 A modern, responsive movie streaming web application that allows users to browse trending movies, watch trailers, and filter content using the TMDB API. Built with performance and code quality in mind.
 
 ## 🚀 Key Features
