@@ -1,73 +1,97 @@
-# React + TypeScript + Vite
+# 🎬 Movie Streaming Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![React](https://img.shields.io/badge/React-19.0-61DAFB?logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?logo=typescript&logoColor=white)
+![Redux Toolkit](https://img.shields.io/badge/Redux_Toolkit-764ABC?logo=redux&logoColor=white)
+![TanStack Query](https://img.shields.io/badge/TanStack_Query-FF4154?logo=react-query&logoColor=white)
+![Material UI](https://img.shields.io/badge/Material_UI-007FFF?logo=mui&logoColor=white)
 
-Currently, two official plugins are available:
+A modern, responsive movie streaming web application that allows users to browse trending movies, watch trailers, and filter content using the TMDB API. Built with performance and code quality in mind.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Key Features
 
-## React Compiler
+- **🔐 Authentication:** Secure Login/Register flow with JWT handling (Axios Interceptors).
+- **⚡ Optimized Data Fetching:** Implements **TanStack Query** for server-state management, caching, and automatic background refetching.
+- **🎥 Interactive UI:**
+  - Watch trailers via Modal popups.
+  - Browse movies by Trending, Popular, Top Rated.
+  - Advanced filtering (Genre, Country, Year).
+- **📱 Fully Responsive:** Adaptive layout using **Material UI Grid** and **Tailwind CSS**, optimized for Mobile, Tablet, and Desktop.
+- **🎨 Theming:** Custom dark/light theme support via Material UI.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠 Tech Stack
 
-## Expanding the ESLint configuration
+### Core
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Framework:** React 19 (Vite)
+- **Language:** TypeScript
+- **Routing:** TanStack Router & React Router DOM
 
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
+### State Management & Data
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **Global State:** Redux Toolkit (Auth slice)
+- **Server State:** TanStack Query (React Query)
+- **API Client:** Axios (Modularized with Interceptors)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+### UI & Styling
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- **Component Library:** Material UI (MUI)
+- **Styling Engine:** Tailwind CSS
+- **Icons:** Lucide React / MUI Icons
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+### Quality Control (DX)
 
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+- **Linter:** ESLint
+- **Formatter:** Prettier
+- **Git Hooks:** Husky + Commitlint (Conventional Commits)
+
+## 📸 Screenshots
+
+|                            Home Page                             |                             Movie Details                              |
+| :--------------------------------------------------------------: | :--------------------------------------------------------------------: |
+| ![Home](https://via.placeholder.com/400x200?text=Home+Page+Demo) | ![Details](https://via.placeholder.com/400x200?text=Details+Page+Demo) |
+
+## 🛠 Installation & Setup
+
+1.  **Clone the repository**
+
+    ```bash
+    git clone [https://github.com/lat2509/Web-film.git](https://github.com/lat2509/Web-film.git)
+    cd Web-film
+    ```
+
+2.  **Install dependencies**
+
+    ```bash
+    yarn install
+    # or
+    npm install
+    ```
+
+3.  **Environment Variables**
+    Create a `.env` file in the root directory and add your TMDB API keys:
+
+    ```env
+    VITE_TMDB_API_KEY=your_tmdb_api_key_here
+    VITE_BASE_URL=[https://api.themoviedb.org/3](https://api.themoviedb.org/3)
+    ```
+
+4.  **Run the development server**
+    ```bash
+    yarn dev
+    ```
+
+## 📂 Project Structure
+
+```bash
+src/
+├── api/            # Axios client & API endpoints (moviesApi, authApi)
+├── components/     # Reusable UI components (MediaCard, TrailerModal...)
+├── features/       # Feature-specific logic
+├── hooks/          # Custom Hooks (useAuth, useHomeData...)
+├── pages/          # Page components (Home, Catalog, SearchResults)
+├── router/         # Routing configuration
+├── store/          # Redux slices & Store setup
+├── types/          # TypeScript interfaces & types
+└── utils/          # Helper functions & Constants
 ```
